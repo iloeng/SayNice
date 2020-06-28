@@ -1,0 +1,285 @@
+# subgroup: face-smiling
+1F600                                      ; fully-qualified     # 😀 E1.0 grinning face
+1F603                                      ; fully-qualified     # 😃 E0.6 grinning face with big eyes
+1F604                                      ; fully-qualified     # 😄 E0.6 grinning face with smiling eyes
+1F601                                      ; fully-qualified     # 😁 E0.6 beaming face with smiling eyes
+1F606                                      ; fully-qualified     # 😆 E0.6 grinning squinting face
+1F605                                      ; fully-qualified     # 😅 E0.6 grinning face with sweat
+1F923                                      ; fully-qualified     # 🤣 E3.0 rolling on the floor laughing
+1F602                                      ; fully-qualified     # 😂 E0.6 face with tears of joy
+1F642                                      ; fully-qualified     # 🙂 E1.0 slightly smiling face
+1F643                                      ; fully-qualified     # 🙃 E1.0 upside-down face
+1F609                                      ; fully-qualified     # 😉 E0.6 winking face
+1F60A                                      ; fully-qualified     # 😊 E0.6 smiling face with smiling eyes
+1F607                                      ; fully-qualified     # 😇 E1.0 smiling face with halo
+
+# subgroup: face-affection
+1F970                                      ; fully-qualified     # 🥰 E11.0 smiling face with hearts
+1F60D                                      ; fully-qualified     # 😍 E0.6 smiling face with heart-eyes
+1F929                                      ; fully-qualified     # 🤩 E5.0 star-struck
+1F618                                      ; fully-qualified     # 😘 E0.6 face blowing a kiss
+1F617                                      ; fully-qualified     # 😗 E1.0 kissing face
+263A FE0F                                  ; fully-qualified     # ☺️ E0.6 smiling face
+263A                                       ; unqualified         # ☺ E0.6 smiling face
+1F61A                                      ; fully-qualified     # 😚 E0.6 kissing face with closed eyes
+1F619                                      ; fully-qualified     # 😙 E1.0 kissing face with smiling eyes
+
+# subgroup: face-tongue
+1F60B                                      ; fully-qualified     # 😋 E0.6 face savoring food
+1F61B                                      ; fully-qualified     # 😛 E1.0 face with tongue
+1F61C                                      ; fully-qualified     # 😜 E0.6 winking face with tongue
+1F92A                                      ; fully-qualified     # 🤪 E5.0 zany face
+1F61D                                      ; fully-qualified     # 😝 E0.6 squinting face with tongue
+1F911                                      ; fully-qualified     # 🤑 E1.0 money-mouth face
+
+# subgroup: face-hand
+1F917                                      ; fully-qualified     # 🤗 E1.0 hugging face
+1F92D                                      ; fully-qualified     # 🤭 E5.0 face with hand over mouth
+1F92B                                      ; fully-qualified     # 🤫 E5.0 shushing face
+1F914                                      ; fully-qualified     # 🤔 E1.0 thinking face
+
+# subgroup: face-neutral-skeptical
+1F910                                      ; fully-qualified     # 🤐 E1.0 zipper-mouth face
+1F928                                      ; fully-qualified     # 🤨 E5.0 face with raised eyebrow
+1F610                                      ; fully-qualified     # 😐 E0.7 neutral face
+1F611                                      ; fully-qualified     # 😑 E1.0 expressionless face
+1F636                                      ; fully-qualified     # 😶 E1.0 face without mouth
+1F60F                                      ; fully-qualified     # 😏 E0.6 smirking face
+1F612                                      ; fully-qualified     # 😒 E0.6 unamused face
+1F644                                      ; fully-qualified     # 🙄 E1.0 face with rolling eyes
+1F62C                                      ; fully-qualified     # 😬 E1.0 grimacing face
+1F925                                      ; fully-qualified     # 🤥 E3.0 lying face
+
+# subgroup: face-sleepy
+1F60C                                      ; fully-qualified     # 😌 E0.6 relieved face
+1F614                                      ; fully-qualified     # 😔 E0.6 pensive face
+1F62A                                      ; fully-qualified     # 😪 E0.6 sleepy face
+1F924                                      ; fully-qualified     # 🤤 E3.0 drooling face
+1F634                                      ; fully-qualified     # 😴 E1.0 sleeping face
+
+# subgroup: face-unwell
+1F637                                      ; fully-qualified     # 😷 E0.6 face with medical mask
+1F912                                      ; fully-qualified     # 🤒 E1.0 face with thermometer
+1F915                                      ; fully-qualified     # 🤕 E1.0 face with head-bandage
+1F922                                      ; fully-qualified     # 🤢 E3.0 nauseated face
+1F92E                                      ; fully-qualified     # 🤮 E5.0 face vomiting
+1F927                                      ; fully-qualified     # 🤧 E3.0 sneezing face
+1F975                                      ; fully-qualified     # 🥵 E11.0 hot face
+1F976                                      ; fully-qualified     # 🥶 E11.0 cold face
+1F974                                      ; fully-qualified     # 🥴 E11.0 woozy face
+1F635                                      ; fully-qualified     # 😵 E0.6 dizzy face
+1F92F                                      ; fully-qualified     # 🤯 E5.0 exploding head
+
+# subgroup: face-hat
+1F920                                      ; fully-qualified     # 🤠 E3.0 cowboy hat face
+1F973                                      ; fully-qualified     # 🥳 E11.0 partying face
+
+# subgroup: face-glasses
+1F60E                                      ; fully-qualified     # 😎 E1.0 smiling face with sunglasses
+1F913                                      ; fully-qualified     # 🤓 E1.0 nerd face
+1F9D0                                      ; fully-qualified     # 🧐 E5.0 face with monocle
+
+# subgroup: face-concerned
+1F615                                      ; fully-qualified     # 😕 E1.0 confused face
+1F61F                                      ; fully-qualified     # 😟 E1.0 worried face
+1F641                                      ; fully-qualified     # 🙁 E1.0 slightly frowning face
+2639 FE0F                                  ; fully-qualified     # ☹️ E0.7 frowning face
+2639                                       ; unqualified         # ☹ E0.7 frowning face
+1F62E                                      ; fully-qualified     # 😮 E1.0 face with open mouth
+1F62F                                      ; fully-qualified     # 😯 E1.0 hushed face
+1F632                                      ; fully-qualified     # 😲 E0.6 astonished face
+1F633                                      ; fully-qualified     # 😳 E0.6 flushed face
+1F97A                                      ; fully-qualified     # 🥺 E11.0 pleading face
+1F626                                      ; fully-qualified     # 😦 E1.0 frowning face with open mouth
+1F627                                      ; fully-qualified     # 😧 E1.0 anguished face
+1F628                                      ; fully-qualified     # 😨 E0.6 fearful face
+1F630                                      ; fully-qualified     # 😰 E0.6 anxious face with sweat
+1F625                                      ; fully-qualified     # 😥 E0.6 sad but relieved face
+1F622                                      ; fully-qualified     # 😢 E0.6 crying face
+1F62D                                      ; fully-qualified     # 😭 E0.6 loudly crying face
+1F631                                      ; fully-qualified     # 😱 E0.6 face screaming in fear
+1F616                                      ; fully-qualified     # 😖 E0.6 confounded face
+1F623                                      ; fully-qualified     # 😣 E0.6 persevering face
+1F61E                                      ; fully-qualified     # 😞 E0.6 disappointed face
+1F613                                      ; fully-qualified     # 😓 E0.6 downcast face with sweat
+1F629                                      ; fully-qualified     # 😩 E0.6 weary face
+1F62B                                      ; fully-qualified     # 😫 E0.6 tired face
+1F971                                      ; fully-qualified     # 🥱 E12.0 yawning face
+
+# subgroup: hand
+
+1F91A                                      ; fully-qualified     # 🤚 E3.0 raised back of hand
+1F590 FE0F                                 ; fully-qualified     # 🖐️ E0.7 hand with fingers splayed
+270B                                       ; fully-qualified     # ✋ E0.6 raised hand
+1F596                                      ; fully-qualified     # 🖖 E1.0 vulcan salute
+1F44C                                      ; fully-qualified     # 👌 E0.6 OK hand
+1F90F                                      ; fully-qualified     # 🤏 E12.0 pinching hand
+270C FE0F                                  ; fully-qualified     # ✌️ E0.6 victory hand
+1F91E                                      ; fully-qualified     # 🤞 E3.0 crossed fingers
+1F91F                                      ; fully-qualified     # 🤟 E5.0 love-you gesture
+1F918                                      ; fully-qualified     # 🤘 E1.0 sign of the horns
+1F919                                      ; fully-qualified     # 🤙 E3.0 666
+1F44D                                      ; fully-qualified     # 👍 E0.6 thumbs up
+270A                                       ; fully-qualified     # ✊ E0.6 raised fist
+1F44F                                      ; fully-qualified     # 👏 E0.6 clapping hands
+1F91D                                      ; fully-qualified     # 🤝 E3.0 handshake
+1F64F                                      ; fully-qualified     # 🙏 E0.6 folded hands
+1F4AA                                      ; fully-qualified     # 💪 E0.6 flexed biceps
+
+# subgroup: face-negative
+1F624                                      ; fully-qualified     # 😤 E0.6 face with steam from nose
+1F621                                      ; fully-qualified     # 😡 E0.6 pouting face
+1F620                                      ; fully-qualified     # 😠 E0.6 angry face
+1F92C                                      ; fully-qualified     # 🤬 E5.0 face with symbols on mouth
+1F608                                      ; fully-qualified     # 😈 E1.0 smiling face with horns
+1F47F                                      ; fully-qualified     # 👿 E0.6 angry face with horns
+1F480                                      ; fully-qualified     # 💀 E0.6 skull
+2620 FE0F                                  ; fully-qualified     # ☠️ E1.0 skull and crossbones
+2620                                       ; unqualified         # ☠ E1.0 skull and crossbones
+
+# subgroup: face-costume
+1F4A9                                      ; fully-qualified     # 💩 E0.6 pile of poo
+1F921                                      ; fully-qualified     # 🤡 E3.0 clown face
+1F479                                      ; fully-qualified     # 👹 E0.6 ogre
+1F47A                                      ; fully-qualified     # 👺 E0.6 goblin
+1F47B                                      ; fully-qualified     # 👻 E0.6 ghost
+1F47D                                      ; fully-qualified     # 👽 E0.6 alien
+1F47E                                      ; fully-qualified     # 👾 E0.6 alien monster
+1F916                                      ; fully-qualified     # 🤖 E1.0 robot
+
+# subgroup: cat-face
+1F63A                                      ; fully-qualified     # 😺 E0.6 grinning cat
+1F638                                      ; fully-qualified     # 😸 E0.6 grinning cat with smiling eyes
+1F639                                      ; fully-qualified     # 😹 E0.6 cat with tears of joy
+1F63B                                      ; fully-qualified     # 😻 E0.6 smiling cat with heart-eyes
+1F63C                                      ; fully-qualified     # 😼 E0.6 cat with wry smile
+1F63D                                      ; fully-qualified     # 😽 E0.6 kissing cat
+1F640                                      ; fully-qualified     # 🙀 E0.6 weary cat
+1F63F                                      ; fully-qualified     # 😿 E0.6 crying cat
+1F63E                                      ; fully-qualified     # 😾 E0.6 pouting cat
+
+# subgroup: monkey-face
+1F648                                      ; fully-qualified     # 🙈 E0.6 see-no-evil monkey
+1F649                                      ; fully-qualified     # 🙉 E0.6 hear-no-evil monkey
+1F64A                                      ; fully-qualified     # 🙊 E0.6 speak-no-evil monkey
+
+# subgroup: emotion
+1F48B                                      ; fully-qualified     # 💋 E0.6 kiss mark
+1F48C                                      ; fully-qualified     # 💌 E0.6 love letter
+1F498                                      ; fully-qualified     # 💘 E0.6 heart with arrow
+1F49D                                      ; fully-qualified     # 💝 E0.6 heart with ribbon
+1F496                                      ; fully-qualified     # 💖 E0.6 sparkling heart
+1F497                                      ; fully-qualified     # 💗 E0.6 growing heart
+1F493                                      ; fully-qualified     # 💓 E0.6 beating heart
+1F49E                                      ; fully-qualified     # 💞 E0.6 revolving hearts
+1F495                                      ; fully-qualified     # 💕 E0.6 two hearts
+1F49F                                      ; fully-qualified     # 💟 E0.6 heart decoration
+2763 FE0F                                  ; fully-qualified     # ❣️ E1.0 heart exclamation
+2763                                       ; unqualified         # ❣ E1.0 heart exclamation
+1F494                                      ; fully-qualified     # 💔 E0.6 broken heart
+2764 FE0F                                  ; fully-qualified     # ❤️ E0.6 red heart
+2764                                       ; unqualified         # ❤ E0.6 red heart
+1F9E1                                      ; fully-qualified     # 🧡 E5.0 orange heart
+1F49B                                      ; fully-qualified     # 💛 E0.6 yellow heart
+1F49A                                      ; fully-qualified     # 💚 E0.6 green heart
+1F499                                      ; fully-qualified     # 💙 E0.6 blue heart
+1F49C                                      ; fully-qualified     # 💜 E0.6 purple heart
+1F90E                                      ; fully-qualified     # 🤎 E12.0 brown heart
+1F5A4                                      ; fully-qualified     # 🖤 E3.0 black heart
+1F90D                                      ; fully-qualified     # 🤍 E12.0 white heart
+1F4A2                                      ; fully-qualified     # 💢 E0.6 anger symbol
+1F4A5                                      ; fully-qualified     # 💥 E0.6 collision
+1F4A3                                      ; fully-qualified     # 💣 E0.6 bomb
+1F4A4                                      ; fully-qualified     # 💤 E0.6 zzz
+
+# subgroup: event
+1F383                                      ; fully-qualified     # 🎃 E0.6 jack-o-lantern
+1F384                                      ; fully-qualified     # 🎄 E0.6 Christmas tree
+1F386                                      ; fully-qualified     # 🎆 E0.6 fireworks
+1F387                                      ; fully-qualified     # 🎇 E0.6 sparkler
+1F9E8                                      ; fully-qualified     # 🧨 E11.0 firecracker
+2728                                       ; fully-qualified     # ✨ E0.6 sparkles
+1F388                                      ; fully-qualified     # 🎈 E0.6 balloon
+1F389                                      ; fully-qualified     # 🎉 E0.6 party popper
+1F38A                                      ; fully-qualified     # 🎊 E0.6 confetti ball
+1F38B                                      ; fully-qualified     # 🎋 E0.6 tanabata tree
+1F38D                                      ; fully-qualified     # 🎍 E0.6 pine decoration
+1F38E                                      ; fully-qualified     # 🎎 E0.6 Japanese dolls
+1F38F                                      ; fully-qualified     # 🎏 E0.6 carp streamer
+1F390                                      ; fully-qualified     # 🎐 E0.6 wind chime
+1F391                                      ; fully-qualified     # 🎑 E0.6 moon viewing ceremony
+1F9E7                                      ; fully-qualified     # 🧧 E11.0 red envelope
+1F380                                      ; fully-qualified     # 🎀 E0.6 ribbon
+1F381                                      ; fully-qualified     # 🎁 E0.6 wrapped gift
+1F397 FE0F                                 ; fully-qualified     # 🎗️ E0.7 reminder ribbon
+1F397                                      ; unqualified         # 🎗 E0.7 reminder ribbon
+1F39F FE0F                                 ; fully-qualified     # 🎟️ E0.7 admission tickets
+1F39F                                      ; unqualified         # 🎟 E0.7 admission tickets
+1F3AB                                      ; fully-qualified     # 🎫 E0.6 ticket
+
+# subgroup: sky & weather
+1F311                                      ; fully-qualified     # 🌑 E0.6 new moon
+1F312                                      ; fully-qualified     # 🌒 E1.0 waxing crescent moon
+1F313                                      ; fully-qualified     # 🌓 E0.6 first quarter moon
+1F314                                      ; fully-qualified     # 🌔 E0.6 waxing gibbous moon
+1F315                                      ; fully-qualified     # 🌕 E0.6 full moon
+1F316                                      ; fully-qualified     # 🌖 E1.0 waning gibbous moon
+1F317                                      ; fully-qualified     # 🌗 E1.0 last quarter moon
+1F318                                      ; fully-qualified     # 🌘 E1.0 waning crescent moon
+1F319                                      ; fully-qualified     # 🌙 E0.6 crescent moon
+1F31A                                      ; fully-qualified     # 🌚 E1.0 new moon face
+1F31B                                      ; fully-qualified     # 🌛 E0.6 first quarter moon face
+1F31C                                      ; fully-qualified     # 🌜 E0.7 last quarter moon face
+1F321 FE0F                                 ; fully-qualified     # 🌡️ E0.7 thermometer
+1F321                                      ; unqualified         # 🌡 E0.7 thermometer
+2600 FE0F                                  ; fully-qualified     # ☀️ E0.6 sun
+2600                                       ; unqualified         # ☀ E0.6 sun
+1F31D                                      ; fully-qualified     # 🌝 E1.0 full moon face
+1F31E                                      ; fully-qualified     # 🌞 E1.0 sun with face
+1FA90                                      ; fully-qualified     # 🪐 E12.0 ringed planet
+2B50                                       ; fully-qualified     # ⭐ E0.6 star
+1F31F                                      ; fully-qualified     # 🌟 E0.6 glowing star
+1F320                                      ; fully-qualified     # 🌠 E0.6 shooting star
+1F30C                                      ; fully-qualified     # 🌌 E0.6 milky way
+2601 FE0F                                  ; fully-qualified     # ☁️ E0.6 cloud
+2601                                       ; unqualified         # ☁ E0.6 cloud
+26C5                                       ; fully-qualified     # ⛅ E0.6 sun behind cloud
+26C8 FE0F                                  ; fully-qualified     # ⛈️ E0.7 cloud with lightning and rain
+26C8                                       ; unqualified         # ⛈ E0.7 cloud with lightning and rain
+1F324 FE0F                                 ; fully-qualified     # 🌤️ E0.7 sun behind small cloud
+1F324                                      ; unqualified         # 🌤 E0.7 sun behind small cloud
+1F325 FE0F                                 ; fully-qualified     # 🌥️ E0.7 sun behind large cloud
+1F325                                      ; unqualified         # 🌥 E0.7 sun behind large cloud
+1F326 FE0F                                 ; fully-qualified     # 🌦️ E0.7 sun behind rain cloud
+1F326                                      ; unqualified         # 🌦 E0.7 sun behind rain cloud
+1F327 FE0F                                 ; fully-qualified     # 🌧️ E0.7 cloud with rain
+1F327                                      ; unqualified         # 🌧 E0.7 cloud with rain
+1F328 FE0F                                 ; fully-qualified     # 🌨️ E0.7 cloud with snow
+1F328                                      ; unqualified         # 🌨 E0.7 cloud with snow
+1F329 FE0F                                 ; fully-qualified     # 🌩️ E0.7 cloud with lightning
+1F329                                      ; unqualified         # 🌩 E0.7 cloud with lightning
+1F32A FE0F                                 ; fully-qualified     # 🌪️ E0.7 tornado
+1F32A                                      ; unqualified         # 🌪 E0.7 tornado
+1F32B FE0F                                 ; fully-qualified     # 🌫️ E0.7 fog
+1F32B                                      ; unqualified         # 🌫 E0.7 fog
+1F32C FE0F                                 ; fully-qualified     # 🌬️ E0.7 wind face
+1F32C                                      ; unqualified         # 🌬 E0.7 wind face
+1F300                                      ; fully-qualified     # 🌀 E0.6 cyclone
+1F308                                      ; fully-qualified     # 🌈 E0.6 rainbow
+1F302                                      ; fully-qualified     # 🌂 E0.6 closed umbrella
+2602 FE0F                                  ; fully-qualified     # ☂️ E0.7 umbrella
+2602                                       ; unqualified         # ☂ E0.7 umbrella
+2614                                       ; fully-qualified     # ☔ E0.6 umbrella with rain drops
+26F1 FE0F                                  ; fully-qualified     # ⛱️ E0.7 umbrella on ground
+26F1                                       ; unqualified         # ⛱ E0.7 umbrella on ground
+26A1                                       ; fully-qualified     # ⚡ E0.6 high voltage
+2744 FE0F                                  ; fully-qualified     # ❄️ E0.6 snowflake
+2744                                       ; unqualified         # ❄ E0.6 snowflake
+2603 FE0F                                  ; fully-qualified     # ☃️ E0.7 snowman
+2603                                       ; unqualified         # ☃ E0.7 snowman
+26C4                                       ; fully-qualified     # ⛄ E0.6 snowman without snow
+2604 FE0F                                  ; fully-qualified     # ☄️ E1.0 comet
+2604                                       ; unqualified         # ☄ E1.0 comet
+1F525                                      ; fully-qualified     # 🔥 E0.6 fire
+1F4A7                                      ; fully-qualified     # 💧 E0.6 droplet
+1F30A                                      ; fully-qualified     # 🌊 E0.6 water wave

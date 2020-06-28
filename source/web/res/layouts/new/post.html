@@ -1,0 +1,374 @@
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- <link rel="icon" href="../drawables/favicon.ico" type="image/x-icon" />
+    <link rel="shortcut icon" href="../drawables/favicon.ico" type="image/x-icon" /> -->
+  <meta name="theme-color" content="#efefef">
+
+  <title>{{.Title}}</title>
+  <meta name="description" content="{{.Description}}">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bonsai.css@1.0.1/dist/bonsai.css">
+  <link rel="stylesheet" href="/static/saynice.css">
+  <style>
+    /* 480 * 720, 720 * 1280, 1080 * 1920, 1660 * 2560, 2160 * 4096 */
+    @media (max-width: 720px) {
+      .menu {
+        display: flex;
+        margin-bottom: 15px;
+        padding: 5px;
+        background-color: #00000009;
+      }
+
+      .content {
+        max-width: 100%;
+      }
+
+      .input {
+        height: 280px;
+      }
+    }
+
+    @media (min-width: 720px) {
+      .menu {
+        display: flex;
+        margin-bottom: 30px;
+        padding: 10px;
+        background-color: #00000009;
+      }
+
+      .content {
+        max-width: 720px;
+        margin: auto;
+        display: flex;
+      }
+
+      .input {
+        height: 480px;
+      }
+
+      .feelings {
+        height: 480px;
+        flex: 3;
+        margin-left: 1em;
+        overflow: auto;
+      }
+    }
+
+    @media (min-width: 1280px) {
+      .menu {
+        display: flex;
+        margin-bottom: 60px;
+        padding: 20px;
+        background-color: #00000009;
+      }
+    }
+
+    @media (min-width: 1920px) {
+
+      /* 复用了 @media (min-width: 720px) 的 content 类属性 */
+      .content {
+        max-width: 1080px;
+      }
+    }
+  </style>
+</head>
+
+<body id="body" class="primary">
+  <nav id="menu" class="menu">
+    <div style="width: auto; padding: 0 10px;">
+      <a href="/">
+        <h2>SayNice</h2>
+      </a>
+    </div>
+    <div style="flex: 1; text-align: end; justify-content: end; align-self: flex-end;">
+      <h3>33° ⛅</h3>
+    </div>
+  </nav>
+  <div id="content" class="content">
+    <div style="flex: 8; margin: 0.2em;">
+      <div class="input" style="background-color: #fff; --p:20px; --shadow:5; --levitate-hvr:5; --br:30px;">
+        <textarea id="postTextarea" placeholder="{{.PostTextareaPlaceholder}}" onkeyup="onPostChanged()"
+          onblur="onPostChanged()"></textarea>
+        <div style="--pos:relative;">
+          <div style="font-size: 2em; --inset-bottom-right:-4; --pos:absolute;">
+            <a onclick="insertStringToPost('#')">#</a>
+            <a id="onOffEmoji" onclick="onEmoji()">😀</a>
+          </div>
+        </div>
+      </div>
+      <div style="display: flex; padding: 10px;">
+        <div style="flex: 1;">
+          <a href="/">
+            <button class="none">{{.PostsAButtonText}}</button>
+          </a>
+        </div>
+        <div style="flex: 1; text-align: end; justify-content: end; align-self: flex-end;">
+          <span id="wordCountSpan" style="--px: 10px;"></span>
+          <button id="previewButton" onclick="onPreview()">{{.PreviewButtonText}}</button>
+        </div>
+      </div>
+    </div>
+    <div id="feelings" class="feelings" style="font-size: 2em; padding: 0;">️</div>
+  </div>
+  <div id="modal" class="modal">
+    <div class="modal-background" onclick="onPreview()"></div>
+    <div class="modal-content">
+      <div style="margin: 0.2em; background-color: var(--background-body); --p:30px; --shadow:5; --br:30px">
+        <p id="previewContent" style="min-height: 80px;"></p>
+        <time id="previewTime"></time>
+      </div>
+      <div style="display: flex; --px: 10px">
+        <div style="flex: 1; align-self: center;">
+          <input type="checkbox" id="communityComplianceCheckBox">
+          <label for="communityComplianceCheckBox" style="color: #fff;">
+            {{.CommunityComplianceCheckBoxText}}
+          </label>
+          <a style="color: #fff;" href="compliance.html">>></a>
+        </div>
+        <div></div>
+        <button onclick="onSubmit()">{{.SubmitButtonText}}</button>
+      </div>
+    </div>
+    <div class="modal-close" onclick="onPreview()"></div>
+  </div>
+  <div id="" class="modal">
+
+  </div>
+
+  <!-- /////////////////////////////////////////////////////////////////// JS START -->
+
+  <script>
+    var postTextarea = document.getElementById("postTextarea")
+    var themes = [
+      "primary",
+      "secondary",
+      "green",
+      "blue",
+      "orange",
+      "red",
+      "black",
+      "accent primary",
+      "accent secondary",
+      "accent green",
+      "accent blue",
+      "accent blue",
+      "accent orange",
+      "accent black",
+    ]
+    var postID = 0
+
+    function changTheme() {
+      var i = Math.random() * 10000 % themes.length
+      var x = themes[Math.floor(i)]
+      document.getElementById("body").className = x
+    }
+
+    function onSymbol(symbol) {
+      insertStringToPost(symbol)
+    }
+
+    function onEmoji() {
+      var feelingsDiv = document.getElementById("feelings")
+      feelingsDiv.hidden = !feelingsDiv.hidden
+
+      if (feelingsDiv.hidden) {
+        document.getElementById("onOffEmoji").innerHTML = "😶"
+
+        postTextarea.focus();
+      } else {
+        document.getElementById("onOffEmoji").innerHTML = "🙂"
+      }
+    }
+
+    function onPostChanged() {
+      var time = formatTime(new Date())
+      var previewContent = document.getElementById("previewContent")
+      var previewTime = document.getElementById("previewTime")
+      previewContent.innerText = postTextarea.value
+      previewTime.innerText = time
+
+      var previewButton = document.getElementById("previewButton")
+      previewButton.disabled = 0 == postTextarea.value.length || 5000 < postTextarea.value.length
+
+      var wordCountSpan = document.getElementById("wordCountSpan")
+      wordCountSpan.innerText = 5000 - postTextarea.value.length
+    }
+
+    function onPreview() {
+      var modal = document.getElementById("modal")
+      if (modal.className == "modal") {
+        modal.className = "modal is-active"
+      } else {
+        modal.className = "modal"
+      }
+    }
+
+    function newPost() {
+      var request = new XMLHttpRequest();
+      request.open("GET", "{{.NewPostURL}}");
+      request.send();
+      request.onload = function () {
+        var data = JSON.parse(request.response);
+        postID = data.data;
+        console.log("new post id is " + postID)
+      }
+    }
+
+    function onSubmit() {
+      var request = new XMLHttpRequest();
+      request.open("POST", "{{.SubmitPostURL}}" + postID);
+      request.send(JSON.stringify({"text": postTextarea.value}));
+      request.onload = function () {
+        var data = JSON.parse(request.response);
+      }
+    }
+
+    const formatTime = date => {
+      const year = date.getFullYear()
+      const month = date.getMonth() + 1
+      const day = date.getDate()
+      const hour = date.getHours()
+      const minute = date.getMinutes()
+      const second = date.getSeconds()
+
+      return [year, month, day].map(formatNumber).join('-') + ' ' + [hour, minute, second].map(formatNumber).join(':')
+    }
+
+    const formatNumber = n => {
+      n = n.toString()
+      return n[1] ? n : '0' + n
+    }
+
+    function initEmoji() {// &#xXXXXX;
+      var request = new XMLHttpRequest();
+      request.open("GET", "/static/emoji_20200616111739.json");
+      request.responseType = "json";
+      request.send();
+      request.onload = function () {
+        var emojis = request.response;
+
+        loadEmoji(emojis)
+      }
+    }
+
+    function loadEmoji(emojis) {
+      var feelings = []
+      emojis.forEach(emoji => {
+        emoji.feelings.forEach(feeling => {
+          var temp = feelings[feeling.name]
+          if (undefined == temp) {
+            temp = [emoji]
+          } else {
+            temp[temp.length] = emoji
+          }
+          feelings[feeling.name] = temp
+        })
+      });
+
+      var feelingsDiv = document.getElementById("feelings")
+
+      feelingsDiv.innerHTML = ''
+
+      for (var key in feelings) {
+        var items = feelings[key]
+        var div = document.createElement("div")
+        var title = document.createElement("span")
+        title.innerHTML = key + "<br>"
+        title.style = "font-size: 0.5em; margin-left: 4px;"
+        div.appendChild(title)
+        items.forEach(item => {
+          var span = document.createElement("a")
+          span.id = item.show
+          span.title = item.name
+          span.onclick = function () {
+            insertStringToPost(item.show)
+          }
+          span.innerHTML = item.show
+          div.appendChild(span)
+        });
+        feelingsDiv.append(div)
+      }
+    }
+
+    function insertStringToPost(str) {
+      var rangeData = getCursorPosition(postTextarea)
+      var postValue = postTextarea.value
+      postTextarea.value =
+        postValue.substring(0, rangeData.start) +
+        str +
+        postValue.substring(rangeData.end, rangeData.len)
+      rangeData.start += str.length
+      rangeData.end = rangeData.start
+      setCursorPosition(postTextarea, rangeData)
+      onPostChanged()
+    }
+
+    function getCursorPosition(textarea) {
+      var rangeData = { text: "", start: 0, end: 0, len: 0 };
+      textarea.focus();
+      rangeData.len = textarea.value.length
+      if (textarea.setSelectionRange) { // W3C
+        rangeData.start = textarea.selectionStart;
+        rangeData.end = textarea.selectionEnd;
+        rangeData.text = (rangeData.start != rangeData.end) ? textarea.value.substring(rangeData.start, rangeData.end) : "";
+      } else if (document.selection) { // IE
+        var i,
+          oS = document.selection.createRange(),
+          // Don't: oR = textarea.createTextRange()
+          oR = document.body.createTextRange();
+        oR.moveToElementText(textarea);
+
+        rangeData.text = oS.text;
+        rangeData.bookmark = oS.getBookmark();
+
+        // object.moveStart(sUnit [, iCount])
+        // Return Value: Integer that returns the number of units moved.
+        for (i = 0; oR.compareEndPoints('StartToStart', oS) < 0 && oS.moveStart("character", -1) !== 0; i++) {
+          // Why? You can alert(textarea.value.length)
+          if (textarea.value.charAt(i) == '\n') {
+            i++;
+          }
+        }
+        rangeData.start = i;
+        rangeData.end = rangeData.text.length + rangeData.start;
+      }
+
+      return rangeData;
+    }
+
+    function setCursorPosition(textarea, rangeData) {
+      if (!rangeData) {
+        alert("You must get cursor position first.")
+      }
+      if (textarea.setSelectionRange) { // W3C
+        textarea.focus();
+        textarea.setSelectionRange(rangeData.start, rangeData.end);
+      } else if (textarea.createTextRange) { // IE
+        var oR = textarea.createTextRange();
+        // Fixbug :
+        // In IE, if cursor position at the end of textarea, the setCursorPosition function don't work
+        if (textarea.value.length === rangeData.start) {
+          oR.collapse(false)
+          oR.select();
+        } else {
+          oR.moveToBookmark(rangeData.bookmark);
+          oR.select();
+        }
+      }
+    }
+
+    changTheme()
+    initEmoji()
+    onEmoji()
+    onPostChanged()
+    newPost()
+    console.log("welcome")
+  </script>
+
+  <!-- /////////////////////////////////////////////////////////////////// JS END -->
+
+</body>
+
+</html>
