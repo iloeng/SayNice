@@ -6,7 +6,7 @@ SayNice.xyz 后端 API 源码.
 
 使用 gin + json + gorm + sqlite3 + freecache + SyncSlice 架构实现。
 
-> 关于主题内容审查，使用随机匿名空间让每个人都有机会参与内容 Review, 了解详情可点击[此处(未创建)]()
+> 关于主题内容审查，使用随机匿名空间让每个人都有机会参与内容 Review, 了解详情可点击[此处](https://github.com/ThreeTenth/SayNice/wiki/随机匿名空间)
 
 SayNice API 共有 6 个接口开放，另有 3 个接口尚未完成，请等待后续更新.
 
