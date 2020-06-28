@@ -8,7 +8,7 @@ on:
 
 jobs:
 
-  build:
+  build and deploy api server:
     name: Build
     runs-on: ubuntu-latest
     steps:
@@ -36,18 +36,13 @@ jobs:
       run:  | 
         go build --ldflags="-w -s" -o "saynice-server-amd64-linux-v1"
 
-  deploy:
-    name: Deploy
-    runs-on: ubuntu-latest
-    steps:
-
     - name: Deploy to Server
       uses: AEnterprise/rsync-deploy@v1.0
       env:
         DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
         ARGS: -avz
         SERVER_PORT: 22
-        FOLDER: source/server/saynice-server-amd64-linux-v1
+        FOLDER: ./
         SERVER_IP: ${{ secrets.SSH_HOST }}
         USERNAME: ${{ secrets.SSH_USERNAME }}
         SERVER_DESTINATION: /home/app/saynice
