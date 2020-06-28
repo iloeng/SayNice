@@ -42,13 +42,12 @@ jobs:
     steps:
 
     - name: Deploy to Server
-      working-directory: ./source/server
       uses: AEnterprise/rsync-deploy@v1.0
       env:
         DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
         ARGS: -avz
         SERVER_PORT: 22
-        FOLDER: saynice-server-amd64-linux-v1
+        FOLDER: source/server/saynice-server-amd64-linux-v1
         SERVER_IP: ${{ secrets.SSH_HOST }}
         USERNAME: ${{ secrets.SSH_USERNAME }}
         SERVER_DESTINATION: /home/app/saynice
