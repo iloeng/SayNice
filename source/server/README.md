@@ -325,5 +325,4 @@ remark | 表决理由 | string | 无 | 无
 
 ### 后续
 
-- 项目访问地址: <https://api.saynice.xyz>
-- 前端访问地址: <https://saynice.xyz>
+待续
