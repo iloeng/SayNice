@@ -8,7 +8,7 @@ on:
 
 jobs:
 
-  build and deploy api server:
+  build_and_deploy_api_server:
     name: Build
     runs-on: ubuntu-latest
     steps:
