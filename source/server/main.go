@@ -270,6 +270,8 @@ func (box *SyncSlice) Count() int {
 var (
 	// Debug 是否查看日志
 	Debug bool
+	// DBPath SQLite3 数据库文件地址
+	DBPath string
 
 	db    *gorm.DB
 	cache *freecache.Cache
@@ -285,11 +287,12 @@ func checkError(err error) {
 
 func init() {
 	flag.BoolVar(&Debug, "debug", false, "是否查看日志")
+	flag.StringVar(&DBPath, "db", "saynice.db", "SQLite3 数据库文件地址")
 }
 
 func initDB() {
 	var err error
-	db, err = gorm.Open("sqlite3", "./saynice_v1.db")
+	db, err = gorm.Open("sqlite3", DBPath)
 	if err != nil {
 		panic("failed to connect database")
 	}

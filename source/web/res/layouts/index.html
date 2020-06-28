@@ -133,7 +133,7 @@
 
     function initEmoji() {// &#xXXXXX;
       var request = new XMLHttpRequest();
-      request.open("GET", "/static/emoji_20200616111739.json");
+      request.open("GET", "/static/emoji.json");
       request.responseType = "json";
       request.send();
       request.onload = function () {
