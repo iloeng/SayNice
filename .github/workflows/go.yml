@@ -48,6 +48,7 @@ jobs:
         SERVER_PORT: 22
         FOLDER: ./source/server/saynice-server-amd64-linux-v1
         SERVER_IP: 47.240.92.98
+        USERNAME: root
         SERVER_DESTINATION: /home/app/saynice
 
     # - name: Test
