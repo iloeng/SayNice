@@ -24,7 +24,7 @@ jobs:
 
     - name: Get dependencies
       run:  |
-        cd source/server
+        cd ./source/server
         go get -v -t -d ./...
         if [ -f Gopkg.toml ]; then
             curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
@@ -33,10 +33,10 @@ jobs:
 
     - name: Build
       run:  | 
-      cd source/server
-      go build -v .
+        cd ./source/server
+        go build -v .
 
-    - name: Test
-      run:  |
-        cd source/server
-        go test -v .
+    # - name: Test
+    #   run:  |
+    #     cd source/server
+    #     go test -v .
