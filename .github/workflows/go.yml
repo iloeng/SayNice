@@ -45,6 +45,7 @@ jobs:
       uses: AEnterprise/rsync-deploy@v1.0
       env:
         DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
+        ARGS: -avz
         SERVER_PORT: 22
         FOLDER: ./source/server/saynice-server-amd64-linux-v1
         SERVER_IP: 47.240.92.98
