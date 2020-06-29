@@ -8,8 +8,8 @@ on:
 
 jobs:
 
-  build_and_deploy_api_server:
-    name: Build
+  build_and_deploy_api_service:
+    name: Build service
     runs-on: ubuntu-latest
     steps:
 
@@ -23,8 +23,16 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Get dependencies
-      working-directory: ./source/server
+      working-directory: ./source/api
       run:  |
+        go get -v -t -d ./...
+        if [ -f Gopkg.toml ]; then
+            curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
+            dep ensure
+        fi
+      working-directory: ./source/web
+      run:  |
+        go get -u github.com/gobuffalo/packr/packr
         go get -v -t -d ./...
         if [ -f Gopkg.toml ]; then
             curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
@@ -32,20 +40,42 @@ jobs:
         fi
 
     - name: Build
-      working-directory: ./source/server
+      working-directory: ./source/api
       run:  | 
-        go build --ldflags="-w -s" -o "saynice-server-amd64-linux-v1"
+        go build --ldflags="-w -s" -o "../../build/saynice-api-amd64-linux-v1"
+      working-directory: ./source/web
+      run:  | 
+        packr
+        packr clean
+        packr build
+        go build --ldflags="-w -s" -o "../../build/saynice-web-amd64-linux"
+
+    name: Deploy service
+    runs-on: ubuntu-latest
+    steps:
 
     - name: Deploy to Server
+      # 服务地址: https://github.com/AEnterprise/rsync-deploy
       uses: AEnterprise/rsync-deploy@v1.0
       env:
         DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
         ARGS: -avz
         SERVER_PORT: 22
-        FOLDER: ./source/server/saynice-server-amd64-linux-v1
+        FOLDER: ./build
         SERVER_IP: ${{ secrets.SSH_HOST }}
         USERNAME: ${{ secrets.SSH_USERNAME }}
         SERVER_DESTINATION: /home/app/saynice
+
+    # - name: Restart Server
+    #   uses: appleboy/ssh-action@master
+    #   with:
+    #     host: ${{ secrets.SSH_HOST }}
+    #     username: ${{ secrets.SSH_USERNAME }}
+    #     key: ${{ secrets.DEPLOY_KEY }}
+    #     script: |
+    #       cd /home/app/saynice
+    #       python manage.py migrate
+    #       supervisorctl restart web
 
     # - name: Test
     #   run:  |
