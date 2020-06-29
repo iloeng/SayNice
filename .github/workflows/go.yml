@@ -8,7 +8,7 @@ on:
 
 jobs:
 
-  build_and_deploy_api_service:
+  build_service:
     name: Build service
     runs-on: ubuntu-latest
     steps:
@@ -54,6 +54,7 @@ jobs:
         packr build
         go build --ldflags="-w -s" -o "../../build/saynice-web-amd64-linux"
 
+  deploy_service:
     name: Deploy service
     runs-on: ubuntu-latest
     steps:
