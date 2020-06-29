@@ -22,7 +22,7 @@ jobs:
     - name: Check out code into the Go module directory
       uses: actions/checkout@v2
 
-    - name: Get dependencies
+    - name: Get api service dependencies
       working-directory: ./source/api
       run:  |
         go get -v -t -d ./...
@@ -30,6 +30,8 @@ jobs:
             curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
             dep ensure
         fi
+
+    - name: Get web service dependencies
       working-directory: ./source/web
       run:  |
         go get -u github.com/gobuffalo/packr/packr
@@ -39,10 +41,12 @@ jobs:
             dep ensure
         fi
 
-    - name: Build
+    - name: Build api service
       working-directory: ./source/api
       run:  | 
         go build --ldflags="-w -s" -o "../../build/saynice-api-amd64-linux-v1"
+
+    - name: Build web service
       working-directory: ./source/web
       run:  | 
         packr
