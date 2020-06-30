@@ -54,11 +54,6 @@ jobs:
         packr build
         go build --ldflags="-w -s" -o "saynice-web-amd64-linux"
 
-  deploy_service:
-    name: Deploy service
-    runs-on: ubuntu-latest
-    steps:
-
     - name: Deploy to Server
       # 服务地址: https://github.com/AEnterprise/rsync-deploy
       uses: AEnterprise/rsync-deploy@v1.0
@@ -70,6 +65,23 @@ jobs:
         SERVER_IP: ${{ secrets.SSH_HOST }}
         USERNAME: ${{ secrets.SSH_USERNAME }}
         SERVER_DESTINATION: /home/app
+
+  # deploy_service:
+  #   name: Deploy service
+  #   runs-on: ubuntu-latest
+  #   steps:
+
+  #   - name: Deploy to Server
+  #     # 服务地址: https://github.com/AEnterprise/rsync-deploy
+  #     uses: AEnterprise/rsync-deploy@v1.0
+  #     env:
+  #       DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
+  #       ARGS: -avz
+  #       SERVER_PORT: ${{ secrets.SSH_PORT }}
+  #       FOLDER: ./source/web/saynice-web-amd64-linux
+  #       SERVER_IP: ${{ secrets.SSH_HOST }}
+  #       USERNAME: ${{ secrets.SSH_USERNAME }}
+  #       SERVER_DESTINATION: /home/app
 
     # - name: Restart Server
     #   uses: appleboy/ssh-action@master
