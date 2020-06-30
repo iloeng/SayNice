@@ -71,7 +71,7 @@ jobs:
       with:
         host: ${{ secrets.SSH_HOST }}
         username: ${{ secrets.SSH_USERNAME }}
-        port: ${{ secrets.PORT }}
+        port: ${{ secrets.SSH_PORT }}
         key: ${{ secrets.DEPLOY_KEY }}
         script: |
           cd /home/app/xyz.saynice
