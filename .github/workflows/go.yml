@@ -66,7 +66,7 @@ jobs:
         DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
         ARGS: -avz
         SERVER_PORT: ${{ secrets.SSH_PORT }}
-        FOLDER: source/web/saynice-web-amd64-linux
+        FOLDER: ./source/web/saynice-web-amd64-linux
         SERVER_IP: ${{ secrets.SSH_HOST }}
         USERNAME: ${{ secrets.SSH_USERNAME }}
         SERVER_DESTINATION: /home/app
