@@ -109,8 +109,11 @@ func indexHTML(c *gin.Context) {
 
 	e := util.GetJSON(uri("/posts"), &api)
 
-	if nil != e || 0 != api.Code {
-		c.JSON(http.StatusOK, "error")
+	if nil != e {
+		c.JSON(http.StatusOK, e.Error())
+		return
+	} else if api.Code != 0 {
+		c.JSON(http.StatusOK, api)
 		return
 	}
 
