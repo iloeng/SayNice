@@ -1,1 +1,0 @@
-echo "success" >> result.d
