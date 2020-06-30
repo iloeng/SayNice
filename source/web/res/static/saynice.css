@@ -36,14 +36,29 @@ button.none {
   box-shadow: none;
   border: none;
   padding: 0px;
-  margin: 0 5px;
+  margin: 0px;
+}
+
+button.emoji {
+  min-width: 1em;
+  width: auto;
+  background-color: var(--background-body);
+  color: var(--text-c, var(--white));
+  box-shadow: none;
+  border: none;
+  padding: 0px;
+  margin: 5px;
+}
+
+.margin-5 {
+  margin: 5px;
 }
 
 .feeling {
   max-height: 180px;
   font-size: 1.3em;
   overflow: auto;
-  padding: 0 5px;
+  padding: 0 5px 10px 5px;
 }
 
 .modal {

@@ -105,21 +105,21 @@ func indexHTML(c *gin.Context) {
 		ReportButtonText: "举报",
 	}
 
-	var api APIMessage
+	var msg APIMessage
 
-	e := util.GetJSON(uri("/posts"), &api)
+	e := util.GetJSON(uri("/posts"), &msg)
 
 	if nil != e {
 		c.JSON(http.StatusOK, e.Error())
 		return
-	} else if 0 != api.Code && 10020 != api.Code {
-		c.JSON(http.StatusOK, api)
+	} else if 0 != msg.Code && 10020 != msg.Code {
+		c.JSON(http.StatusOK, msg)
 		return
 	}
 
-	data.Posts = api.Data
+	data.Posts = msg.Data
 
-	fmt.Println(api.Data)
+	fmt.Println(msg.Data)
 	c.HTML(http.StatusOK, "index", data)
 }
 

@@ -39,7 +39,7 @@
       }
 
       .content {
-        max-width: 720px;
+        max-width: 860px;
         margin: auto;
         display: flex;
       }
@@ -69,7 +69,7 @@
 
       /* 复用了 @media (min-width: 720px) 的 content 类属性 */
       .content {
-        max-width: 1080px;
+        max-width: 1280px;
       }
     }
   </style>
@@ -82,9 +82,9 @@
         <h2>SayNice</h2>
       </a>
     </div>
-    <!-- <div style="flex: 1; text-align: end; justify-content: end; align-self: flex-end;">
+    <div style="flex: 1; text-align: end; justify-content: end; align-self: flex-end;">
       <h3>33° ⛅</h3>
-    </div> -->
+    </div>
   </nav>
   <div id="content" class="content">
     <div style="flex: 8; margin: 0.2em;">
@@ -110,7 +110,7 @@
         </div>
       </div>
     </div>
-    <div id="feelings" style="font-size: 2em; padding: 0;">️</div>
+    <div id="feelings" class="feelings" style="font-size: 2em; padding: 0;">️</div>
   </div>
   <div id="modal" class="modal">
     <div class="modal-background" onclick="onPreview()"></div>
@@ -279,9 +279,10 @@
         title.style = "font-size: 0.5em; margin-left: 4px;"
         div.appendChild(title)
         items.forEach(item => {
-          var span = document.createElement("a")
+          var span = document.createElement("button")
           span.id = item.show
           span.title = item.name
+          span.className = "emoji"
           span.onclick = function () {
             insertStringToPost(item.show)
           }

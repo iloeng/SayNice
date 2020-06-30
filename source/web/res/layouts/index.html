@@ -61,9 +61,9 @@
         <h2>SayNice</h2>
       </a>
     </div>
-    /* <div style="flex: 1; text-align: end; justify-content: end; align-self: flex-end;">
+    <div style="flex: 1; text-align: end; justify-content: end; align-self: flex-end;">
       <h3>33° ⛅</h3>
-    </div> */
+    </div>
   </div>
   <div id="content" class="content">
     {{range $i, $post := $.Posts}}
@@ -77,15 +77,7 @@
         </div>
       </div>
       <div id="{{$post.id}}" hidden>
-        <br>
-        <div id="attitude" style="font-size: 1.3em;">
-          <button class="none">🤚+10</button>
-          <button class="none">🙂+5</button>
-          <button class="none">🤩+3</button>
-          <button class="none">😙</button>
-          <button class="none">😊</button>
-        </div>
-        <br>
+        <div id="attitude" style="font-size: 1.3em; margin-top: 10px;"></div>
       </div>
     </div>
     {{end}}
@@ -181,7 +173,7 @@
         div.appendChild(title)
         items.forEach(item => {
           var btn = document.createElement("button")
-          btn.className = "none"
+          btn.className = "emoji"
           btn.id = item.show
           btn.title = item.name
           btn.onclick = function () {
@@ -197,9 +189,9 @@
     function onAttitude(show) {
       var postAttitudeDiv = document.getElementById(currentPostId).getElementsByTagName("*")
       var btn = document.createElement("button")
-      btn.className = "none"
+      btn.className = "emoji"
       btn.innerHTML = show
-      postAttitudeDiv[1].appendChild(btn)
+      postAttitudeDiv[0].appendChild(btn)
     }
 
     changTheme()
