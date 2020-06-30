@@ -8,7 +8,7 @@ User=root
 Group=root
 
 GuessMainPID=yes
-ExecStart=/usr/bin/saynice-api
+ExecStart=/usr/bin/saynice-api - db /usr/bin/saynice.db
 ExecReload=/bin/kill -s QUIT $MAINPID
 ExecStop=/bin/kill -s QUIT $MAINPID
 RemainAfterExit=yes
