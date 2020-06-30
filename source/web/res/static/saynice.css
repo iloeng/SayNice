@@ -1,4 +1,3 @@
-
 /* /////////////////////////////////////////////////////////////////// 响应式布局 END */
 
 footer {
@@ -40,8 +39,11 @@ button.none {
   margin: 0 5px;
 }
 
-.pop {
-
+.feeling {
+  max-height: 180px;
+  font-size: 1.3em;
+  overflow: auto;
+  padding: 0 5px;
 }
 
 .modal {

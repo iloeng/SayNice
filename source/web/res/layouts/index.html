@@ -61,33 +61,34 @@
         <h2>SayNice</h2>
       </a>
     </div>
-    <div style="flex: 1; text-align: end; justify-content: end; align-self: flex-end;">
+    /* <div style="flex: 1; text-align: end; justify-content: end; align-self: flex-end;">
       <h3>33° ⛅</h3>
-    </div>
+    </div> */
   </div>
   <div id="content" class="content">
     {{range $i, $post := $.Posts}}
-    <div style="--p:25px;">
-      <p style="--px: 5px">{{$post.text}}</p>
-      <div style="display: flex; justify-content: end; --px:5px">
+    <div style="padding:25px;">
+      <p style="padding: 0 5px">{{$post.text}}</p>
+      <div style="display: flex; justify-content: end; padding: 0 5px">
         <span style="flex: 1">{{$post.createdAt}}</span>
         <div style="flex: 1; text-align: end">
-          <button class="none" style="--px: 15px;" onclick="onEmoji()">😀</button>
+          <button class="none" style="padding: 0 15px;" onclick="onEmoji({{$post.id}})">😀</button>
           <button class="none">{{$.ReportButtonText}}</button>
         </div>
       </div>
-      <br>
-      <div style="font-size: 1.3em;">
-        <button class="none">🤚+10</button>
-        <button class="none">🙂+5</button>
-        <button class="none">🤩+3</button>
-        <button class="none">😙</button>
-        <button class="none">😊</button>
+      <div id="{{$post.id}}" hidden>
+        <br>
+        <div id="attitude" style="font-size: 1.3em;">
+          <button class="none">🤚+10</button>
+          <button class="none">🙂+5</button>
+          <button class="none">🤩+3</button>
+          <button class="none">😙</button>
+          <button class="none">😊</button>
+        </div>
+        <br>
       </div>
     </div>
     {{end}}
-    <div id="feelings" style="max-height: 180px; font-size: 1.3em; overflow: auto; --px: 5px">
-    </div>
   </div>
   <button onclick="onWrite()"
     style="position: fixed; height: 48px; width: 48px; bottom: 48px; right: 32px; text-align: center; --p: 0px; --br:90px; --shadow:5;">
@@ -115,6 +116,12 @@
       "accent black",
     ]
 
+    var feelingsDiv = document.createElement("div")
+    feelingsDiv.setAttribute("id", "feeling");
+    feelingsDiv.className = "feeling"
+
+    var currentPostId = 0
+
     function changTheme() {
       // var x = document.getElementById("theme").value;
       var i = Math.random() * 10000 % themes.length
@@ -122,9 +129,17 @@
       document.getElementById("body").className = x
     }
 
-    function onEmoji() {
-      var feelingsDiv = document.getElementById("feelings")
-      feelingsDiv.hidden = !feelingsDiv.hidden
+    function onEmoji(postId) {
+      if (postId != currentPostId && 0 != currentPostId) {
+        var cur = document.getElementById(currentPostId)
+        cur.hidden = true
+      }
+
+      var feel = document.getElementById(postId)
+      feel.appendChild(feelingsDiv)
+      feel.hidden = !feel.hidden
+
+      currentPostId = postId
     }
 
     function onWrite() {
@@ -157,10 +172,6 @@
         })
       });
 
-      var feelingsDiv = document.getElementById("feelings")
-
-      feelingsDiv.innerHTML = ''
-
       for (var key in feelings) {
         var items = feelings[key]
         var div = document.createElement("div")
@@ -169,17 +180,26 @@
         title.style = "font-size: 0.5em; margin-left: 4px;"
         div.appendChild(title)
         items.forEach(item => {
-          var span = document.createElement("a")
-          span.id = item.show
-          span.title = item.name
-          span.onclick = function () {
-            insertStringToPost(item.show)
+          var btn = document.createElement("button")
+          btn.className = "none"
+          btn.id = item.show
+          btn.title = item.name
+          btn.onclick = function () {
+            onAttitude(item.show)
           }
-          span.innerHTML = item.show
-          div.appendChild(span)
+          btn.innerHTML = item.show
+          div.appendChild(btn)
         });
         feelingsDiv.append(div)
       }
+    }
+
+    function onAttitude(show) {
+      var postAttitudeDiv = document.getElementById(currentPostId).getElementsByTagName("*")
+      var btn = document.createElement("button")
+      btn.className = "none"
+      btn.innerHTML = show
+      postAttitudeDiv[1].appendChild(btn)
     }
 
     changTheme()

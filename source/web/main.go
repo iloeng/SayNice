@@ -77,8 +77,8 @@ func main() {
 	data, _ := box.FindString("index.html")
 	indexTmpl.Parse(data)
 
-	indexTmpl = tmpl.New("new/post")
-	data, _ = box.FindString("new/post.html")
+	indexTmpl = tmpl.New("newPost")
+	data, _ = box.FindString("newPost.html")
 	indexTmpl.Parse(data)
 
 	indexTmpl = tmpl.New("result")
@@ -112,7 +112,7 @@ func indexHTML(c *gin.Context) {
 	if nil != e {
 		c.JSON(http.StatusOK, e.Error())
 		return
-	} else if api.Code != 0 {
+	} else if 0 != api.Code && 10020 != api.Code {
 		c.JSON(http.StatusOK, api)
 		return
 	}
@@ -136,7 +136,7 @@ func newPostHTML(c *gin.Context) {
 		SubmitButtonText:                "发布",
 	}
 
-	c.HTML(http.StatusOK, "new/post", data)
+	c.HTML(http.StatusOK, "newPost", data)
 }
 
 func resultHTML(c *gin.Context) {
