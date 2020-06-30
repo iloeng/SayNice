@@ -9,7 +9,7 @@ mv $work_path/saynice-web-amd64-linux /usr/local/bin/saynice-web
 mv $work_path/saynice-api.service /lib/systemd/system
 mv $work_path/saynice-web.service /lib/systemd/system
 
-# rm -rf $work_path
+rm -rf $work_path
 
 systemctl daemon-reload
 systemctl enable saynice-api

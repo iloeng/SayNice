@@ -8,7 +8,7 @@ User=root
 Group=root
 
 GuessMainPID=yes
-ExecStart=/usr/local/bin/saynice-web -D "http://localhost:18823/v1"
+ExecStart=/usr/local/bin/saynice-web -D "https://api.saynice.whoam.xyz/v1"
 ExecReload=/bin/kill -s QUIT $MAINPID
 ExecStop=/bin/kill -s QUIT $MAINPID
 RemainAfterExit=yes
