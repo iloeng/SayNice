@@ -49,10 +49,7 @@ jobs:
     - name: Build web service
       working-directory: ./source/web
       run:  | 
-        packr
-        packr clean
-        packr build
-        go build --ldflags="-w -s" -o "../../xyz.saynice/saynice-web-amd64-linux"
+        packr2 build --ldflags="-w -s" -o "../../xyz.saynice/saynice-web-amd64-linux"
 
     - name: Deploy to Server
       # 服务地址: https://github.com/AEnterprise/rsync-deploy
