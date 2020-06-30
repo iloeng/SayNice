@@ -44,7 +44,7 @@ jobs:
     - name: Build api service
       working-directory: ./source/api
       run:  | 
-        go build --ldflags="-w -s" -o "saynice-api-amd64-linux-v1"
+        go build --ldflags="-w -s" -o "../../xyz.saynice/saynice-api-amd64-linux-v1"
 
     - name: Build web service
       working-directory: ./source/web
@@ -52,7 +52,7 @@ jobs:
         packr
         packr clean
         packr build
-        go build --ldflags="-w -s" -o "saynice-web-amd64-linux"
+        go build --ldflags="-w -s" -o "../../xyz.saynice/saynice-web-amd64-linux"
 
     - name: Deploy to Server
       # 服务地址: https://github.com/AEnterprise/rsync-deploy
@@ -61,7 +61,7 @@ jobs:
         DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
         ARGS: -avz
         SERVER_PORT: ${{ secrets.SSH_PORT }}
-        FOLDER: ./source/web/saynice-web-amd64-linux
+        FOLDER: ./xyz.saynice
         SERVER_IP: ${{ secrets.SSH_HOST }}
         USERNAME: ${{ secrets.SSH_USERNAME }}
         SERVER_DESTINATION: /home/app
