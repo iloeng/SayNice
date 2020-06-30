@@ -1,4 +1,16 @@
-chmod 775 saynice-api-amd64-linux-v1
-chmod 775 saynice-web-amd64-linux
-./saynice-api-amd64-linux-v1 &
-./saynice-web-amd64-linux &
+# 通过 readlink 获取绝对路径，再取出目录
+work_path=$(dirname $(readlink -f $0))
+
+mv $work_path/saynice-api-amd64-linux-v1 /usr/bin/saynice-api
+mv $work_path/saynice-web-amd64-linux /usr/bin/saynice-web
+mv $work_path/saynice-api.service /lib/systemd/system
+mv $work_path/saynice-web.service /lib/systemd/system
+
+rm -rf $work_path
+
+systemctl daemon-reload
+systemctl enable saynice-api
+systemctl enable saynice-web
+
+systemctl start saynice-api
+systemctl start saynice-web

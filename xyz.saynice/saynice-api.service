@@ -1,0 +1,18 @@
+[Unit]
+Description=SayNice API Service
+Require=network.target
+After=syslog.target network.target remote-fs.target nss-lookup.target
+
+[Service]
+User=root
+Group=root
+
+GuessMainPID=yes
+ExecStart=/usr/bin/saynice-api
+ExecReload=/bin/kill -s QUIT $MAINPID
+ExecStop=/bin/kill -s QUIT $MAINPID
+RemainAfterExit=yes
+KillMode=mixed
+
+[Install]
+WantedBy=multi-user.target
