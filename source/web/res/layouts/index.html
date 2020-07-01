@@ -51,6 +51,43 @@
         max-width: 640px;
         margin: auto;
       }
+    }
+
+    .text {
+      font-size: 16px;
+      line-height: 26px;
+      max-height: 130px;
+      overflow: hidden;
+      position: relative;
+      white-space: pre-line;
+      padding: 0 5px;
+    }
+
+    .text button {
+      position: absolute;
+      right: -5px;
+      top: 104px;
+      font-size: 16px;
+      line-height: 26px;
+      text-align: center;
+      background-color: var(--background-body);
+      background-image: linear-gradient(rgba(255, 255, 255, .1), rgba(255, 255, 255, .1));
+      color: var(--text-c, var(--white));
+      box-shadow: none;
+      border: none;
+      padding: 0 16px;
+      margin: 0;
+    }
+
+    .text.show-more {
+      max-height: none;
+    }
+
+    .text.show-more button {
+      top: unset;
+      bottom: 0;
+      visibility: hidden;
+    }
   </style>
 </head>
 
@@ -68,17 +105,16 @@
   <div id="content" class="content">
     {{range $i, $post := $.Posts}}
     <div style="padding:25px;">
-      <p style="padding: 0 5px">{{$post.text}}</p>
-      <div style="display: flex; justify-content: end; padding: 0 5px">
+      <div id="t{{$post.id}}" class="text">{{$post.text}}<button onclick="onAll({{$post.id}})">全文</button></div>
+      <div style="display: flex; justify-content: end; padding: 10px 5px">
         <span style="flex: 1">{{$post.createdAt}}</span>
         <div style="flex: 1; text-align: end">
-          <button class="none" style="padding: 0 15px;" onclick="onEmoji({{$post.id}})">😀</button>
+          <button class="none" style="padding: 2px 15px;" onclick="onEmoji({{$post.id}})">😀</button>
           <button class="none">{{$.ReportButtonText}}</button>
         </div>
       </div>
-      <div id="{{$post.id}}" hidden>
-        <div id="attitude" style="font-size: 1.3em; margin-top: 10px;"></div>
-      </div>
+      <div id="a{{$post.id}}" style="background-color: #00000009; font-size: 1.3em;"></div>
+      <div id="f{{$post.id}}" style="background-color: #00000009; font-size: 1.3em;" hidden></div>
     </div>
     {{end}}
   </div>
@@ -121,13 +157,18 @@
       document.getElementById("body").className = x
     }
 
+    function onAll(tid) {
+      var p = document.getElementById("t" + tid)
+      p.className = "text show-more"
+    }
+
     function onEmoji(postId) {
       if (postId != currentPostId && 0 != currentPostId) {
-        var cur = document.getElementById(currentPostId)
+        var cur = document.getElementById("f" + currentPostId)
         cur.hidden = true
       }
 
-      var feel = document.getElementById(postId)
+      var feel = document.getElementById("f" + postId)
       feel.appendChild(feelingsDiv)
       feel.hidden = !feel.hidden
 
@@ -187,11 +228,11 @@
     }
 
     function onAttitude(show) {
-      var postAttitudeDiv = document.getElementById(currentPostId).getElementsByTagName("*")
+      var postAttitudeDiv = document.getElementById("a" + currentPostId)
       var btn = document.createElement("button")
       btn.className = "emoji"
       btn.innerHTML = show
-      postAttitudeDiv[0].appendChild(btn)
+      postAttitudeDiv.appendChild(btn)
     }
 
     changTheme()

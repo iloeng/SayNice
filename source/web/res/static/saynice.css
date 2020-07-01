@@ -25,13 +25,13 @@ textarea:focus {
 
 p {
   font-size: 16px;
-  font-weight: 500;
+  /* font-weight: 500; */
   color: var(--tag-c);
 }
 
 button.none {
   width: auto;
-  background-color: var(--background-body);
+  background-color: #00000000;
   color: var(--text-c, var(--white));
   box-shadow: none;
   border: none;
@@ -42,7 +42,7 @@ button.none {
 button.emoji {
   min-width: 1em;
   width: auto;
-  background-color: var(--background-body);
+  background-color: #00000000;
   color: var(--text-c, var(--white));
   box-shadow: none;
   border: none;

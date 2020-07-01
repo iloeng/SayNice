@@ -2,7 +2,6 @@ package main
 
 import (
 	"flag"
-	"fmt"
 	"html/template"
 	"net/http"
 
@@ -119,7 +118,6 @@ func indexHTML(c *gin.Context) {
 
 	data.Posts = msg.Data
 
-	fmt.Println(msg.Data)
 	c.HTML(http.StatusOK, "index", data)
 }
 
