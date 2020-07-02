@@ -4,11 +4,11 @@
   <div class="modal-content">
     <div style="margin: 0.2em; background-color: var(--background-body); --p:30px; --shadow:5; --br:30px">
       <h4>发现一个新主题</h4>
-      <p class="preview">{{.raSpace.post.text}}</p>
+      <p class="preview">{{.Vote.raSpace.post.text}}</p>
       <hr style="margin: 20px 0;">
-      <h6>{{.raSpace.subject}}</h6>
+      <h6>{{.Vote.raSpace.subject}}</h6>
       <div id="articles" class="horizontal-scroll-wrapper">
-        {{range $i, $article := $.raSpace.articles}}
+        {{range $i, $article := $.Vote.raSpace.articles}}
         <div id="article{{$i}}">
           <p style="font-size: 20px;">{{$article}}</p>
           <button onclick="onVote(2)">有</button>
@@ -27,7 +27,12 @@
 </div>
 <script>
   function onVote(status) {
-    console.log("{{.token}} vote " + status)
+    var request = new XMLHttpRequest();
+    request.open("POST", "{{.APIDomain}}/vote/{{.Vote.token}}");
+    request.send(JSON.stringify({ "status": status }));
+    request.onload = function () {
+      console.log("vote " + request.status)
+    }
 
     var spaceModal = document.getElementById("space")
     spaceModal.className = "modal"
