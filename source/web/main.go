@@ -38,8 +38,7 @@ type NewPostData struct {
 	PostsAButtonText                string
 	PreviewButtonText               string
 	CommunityComplianceCheckBoxText string
-	NewPostURL                      string
-	SubmitPostURL                   string
+	APIDomain                       string
 	SubmitButtonText                string
 }
 
@@ -48,7 +47,10 @@ type IndexData struct {
 	Title            string
 	Description      string
 	ReportButtonText string
+	APIDomain        string
 	Posts            interface{}
+	HasVote          bool
+	Vote             interface{}
 }
 
 var (
@@ -84,6 +86,10 @@ func main() {
 	data, _ = box.FindString("result.html")
 	indexTmpl.Parse(data)
 
+	indexTmpl = tmpl.New("fragmentVote")
+	data, _ = box.FindString("fragmentVote.html")
+	indexTmpl.Parse(data)
+
 	staticBox := packr.NewBox("./res/static")
 
 	router := gin.Default()
@@ -102,6 +108,7 @@ func indexHTML(c *gin.Context) {
 		Title:            "SayNice - 匿名情感倾诉社区、完美树洞、你的 OK 工具人",
 		Description:      "",
 		ReportButtonText: "举报",
+		APIDomain:        Domain,
 	}
 
 	var msg APIMessage
@@ -118,6 +125,13 @@ func indexHTML(c *gin.Context) {
 
 	data.Posts = msg.Data
 
+	e = util.GetJSON(uri("/space/"), &msg)
+
+	if nil == e && 0 == msg.Code {
+		data.HasVote = true
+		data.Vote = msg.Data
+	}
+
 	c.HTML(http.StatusOK, "index", data)
 }
 
@@ -129,8 +143,7 @@ func newPostHTML(c *gin.Context) {
 		PostsAButtonText:                "Say Nice 社区",
 		PreviewButtonText:               "预览",
 		CommunityComplianceCheckBoxText: "是否同意 SayNice.xyz 社区守约",
-		NewPostURL:                      uri("/new/post"),
-		SubmitPostURL:                   uri("/post/"),
+		APIDomain:                       Domain,
 		SubmitButtonText:                "发布",
 	}
 

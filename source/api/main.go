@@ -180,6 +180,7 @@ type RASpace struct {
 	Post          *Post     `json:"post,omitempty" gorm:"foreignkey:PostID;"`
 	PostID        uint      `json:"postId"`
 	Votes         []Vote    `json:"votes,omitempty"`
+	Articles      []string  `json:"articles,omitempty" gorm:"-"`
 	MaxVotedCount int       `json:"-" gorm:"type:integer;default:0;not null;"`
 	Status        int       `json:"status" gorm:"type:integer;default:0;not null;"`
 	CreatedAt     *JSONTime `json:"createdAt,omitempty"`
@@ -641,10 +642,22 @@ func getRASpace(c *gin.Context) (int, string, interface{}) {
 			token = uuid.New().String()
 		}
 
+		articles := []string{
+			"是否含有政治内容？",
+			"是否含有军事和战争内容？",
+			"是否含有性和毒品交易内容？",
+			"是否含有赌博、暴力和血腥内容？",
+			"是否含有未经证实的新闻？",
+			"是否含有地区、种族以及性别歧视的言论？",
+			"是否含有令人反感的广告？",
+			"是否出现了具体的人名、地址、邮箱、手机号、微信号、Fackbook号等联系方式？",
+		}
+
+		space.Articles = articles
+
 		vote := Vote{
-			RASpace:   &space,
-			RASpaceID: space.ID,
-			Token:     token,
+			RASpace: &space,
+			Token:   token,
 		}
 
 		cache.Set(key(PrefixTOKEN, token), val(space.ID), Expire3Days)

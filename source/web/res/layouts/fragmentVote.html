@@ -1,0 +1,45 @@
+{{define "fgm_vote"}}
+<div id="space" class="modal is-active">
+  <div class="modal-background"></div>
+  <div class="modal-content">
+    <div style="margin: 0.2em; background-color: var(--background-body); --p:30px; --shadow:5; --br:30px">
+      <h4>发现一个新主题</h4>
+      <p class="preview">{{.raSpace.post.text}}</p>
+      <hr style="margin: 20px 0;">
+      <h6>{{.raSpace.subject}}</h6>
+      <div id="articles" class="horizontal-scroll-wrapper">
+        {{range $i, $article := $.raSpace.articles}}
+        <div id="article{{$i}}">
+          <p style="font-size: 20px;">{{$article}}</p>
+          <button onclick="onVote(2)">有</button>
+          <button onclick="onNext({{$i}})">无</button>
+        </div>
+        {{end}}
+        <div>
+          <p style="font-size: 20px;">检测结束，请问是否允许发布该主题？</p>
+          <button onclick="onVote(2)">拒绝</button>
+          <button onclick="onVote(1)">允许</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-close" onclick="onVote(3)"></div>
+</div>
+<script>
+  function onVote(status) {
+    console.log("{{.token}} vote " + status)
+
+    var spaceModal = document.getElementById("space")
+    spaceModal.className = "modal"
+  }
+
+  function onNext(i) {
+    var articlesDiv = document.getElementById("articles").getElementsByTagName("div")
+    for (let index = 0; index < articlesDiv.length; index++) {
+      const element = articlesDiv[index];
+      element.style.transform = 'translateX(-' + (i + 1) * 100 + '%)';
+      element.style.transition = "0.2s"
+    }
+  }
+</script>
+{{end}}

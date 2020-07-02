@@ -25,7 +25,7 @@ textarea:focus {
 
 p {
   font-size: 16px;
-  /* font-weight: 500; */
+  white-space: pre-line;
   color: var(--tag-c);
 }
 
@@ -60,6 +60,83 @@ button.emoji {
   overflow: auto;
   padding: 0 5px 10px 5px;
 }
+
+.text {
+  font-size: 16px;
+  line-height: 26px;
+  max-height: 130px;
+  overflow: hidden;
+  position: relative;
+  padding: 0 5px;
+}
+
+.text button {
+  position: absolute;
+  right: -5px;
+  top: 104px;
+  font-size: 16px;
+  line-height: 26px;
+  text-align: center;
+  background-color: var(--background-body);
+  background-image: linear-gradient(rgba(255, 255, 255, .1), rgba(255, 255, 255, .1));
+  color: var(--text-c, var(--white));
+  box-shadow: none;
+  border: none;
+  padding: 0 16px;
+  margin: 0;
+}
+
+.text.show-more {
+  max-height: none;
+}
+
+.text.show-more button {
+  top: unset;
+  bottom: 0;
+  visibility: hidden;
+}
+
+p.preview {
+  width: 100%;
+  margin: 40px 0 40px 20px;
+}
+
+p.preview::before {
+  content: "\201C";
+  font-size: 50px;
+  float: left;
+  margin-top: -40px;
+  margin-left: -20px;
+  font-family: georgia, serif;
+  color: var(--tag-c);
+}
+
+p.preview::after {
+  content: "\201D";
+  font-size: 50px;
+  float: right;
+  font-family: georgia, serif;
+  color: var(--tag-c);
+}
+
+/* /////////////////////////////////////////////////////////////////// 随机匿名空间 START */
+
+.horizontal-scroll-wrapper {
+  width: 100%;
+  overflow: hidden;
+  min-height: 50px;
+  display: -webkit-box;
+}
+
+.horizontal-scroll-wrapper>div {
+  text-align: center;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  border: none;
+}
+
+/* /////////////////////////////////////////////////////////////////// 弹窗 START */
 
 .modal {
   align-items: center;

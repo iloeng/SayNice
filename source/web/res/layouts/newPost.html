@@ -127,7 +127,6 @@
           </label>
           <a style="color: #fff;" href="compliance.html">>></a>
         </div>
-        <div></div>
         <button onclick="onSubmit()">{{.SubmitButtonText}}</button>
       </div>
     </div>
@@ -204,7 +203,7 @@
 
     function newPost() {
       var request = new XMLHttpRequest();
-      request.open("GET", "{{.NewPostURL}}");
+      request.open("GET", "{{.APIDomain/new/post}}");
       request.send();
       request.onload = function () {
         var data = JSON.parse(request.response);
@@ -215,7 +214,7 @@
 
     function onSubmit() {
       var request = new XMLHttpRequest();
-      request.open("POST", "{{.SubmitPostURL}}" + postID);
+      request.open("POST", "{{.APIDomain/post/}}" + postID);
       request.send(JSON.stringify({"text": postTextarea.value}));
       request.onload = function () {
         var data = JSON.parse(request.response);

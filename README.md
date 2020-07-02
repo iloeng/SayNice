@@ -28,6 +28,10 @@ SayNice 匿名情感倾诉社区。
 
 在 `source` 文件夹下，分别有两个目录：`server` 和 `web`，使用 `golang` 编写，`web` 服务使用了 [packr](https://github.com/gobuffalo/packr) 作为静态资源打包工具，你可以将源码编译为目标平台下的可执行文件来搭建 SayNice 社区。
 
+### GitHub Actions
+
 本项目使用了 GitHub Actions 实现项目部署自动化。
 
-本项目采用 MIT 开源协议。
+------------------
+
+采用 MIT 开源协议。
