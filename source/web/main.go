@@ -40,6 +40,13 @@ type NewPostData struct {
 	CommunityComplianceCheckBoxText string
 	APIDomain                       string
 	SubmitButtonText                string
+	VoteData                        VoteData
+}
+
+// VoteData 随机匿名空间表决数据对象
+type VoteData struct {
+	Vote    interface{}
+	VoteURL string
 }
 
 // IndexData index.html 页面片段
@@ -50,7 +57,7 @@ type IndexData struct {
 	APIDomain        string
 	Posts            interface{}
 	HasVote          bool
-	Vote             interface{}
+	VoteData         VoteData
 }
 
 var (
@@ -82,12 +89,16 @@ func main() {
 	data, _ = box.FindString("newPost.html")
 	indexTmpl.Parse(data)
 
-	indexTmpl = tmpl.New("result")
-	data, _ = box.FindString("result.html")
+	indexTmpl = tmpl.New("post")
+	data, _ = box.FindString("post.html")
 	indexTmpl.Parse(data)
 
 	indexTmpl = tmpl.New("fragmentVote")
 	data, _ = box.FindString("fragmentVote.html")
+	indexTmpl.Parse(data)
+
+	indexTmpl = tmpl.New("fragmentPreview")
+	data, _ = box.FindString("fragmentPreview.html")
 	indexTmpl.Parse(data)
 
 	staticBox := packr.NewBox("./res/static")
@@ -96,7 +107,7 @@ func main() {
 
 	router.GET("/", indexHTML)
 	router.GET("/new/post", newPostHTML)
-	router.POST("/result", resultHTML)
+	router.POST("/post/:id", postHTML)
 
 	router.SetHTMLTemplate(tmpl)
 	router.StaticFS("/static", staticBox)
@@ -129,7 +140,10 @@ func indexHTML(c *gin.Context) {
 
 	if nil == e && 0 == msg.Code {
 		data.HasVote = true
-		data.Vote = msg.Data
+		data.VoteData = VoteData{
+			Vote:    msg.Data,
+			VoteURL: uri("/vote"),
+		}
 	}
 
 	c.HTML(http.StatusOK, "index", data)
@@ -150,6 +164,18 @@ func newPostHTML(c *gin.Context) {
 	c.HTML(http.StatusOK, "newPost", data)
 }
 
-func resultHTML(c *gin.Context) {
-	c.HTML(http.StatusOK, "result", nil)
+func postHTML(c *gin.Context) {
+	var msg APIMessage
+
+	e := util.GetJSON(uri("/post"), &msg)
+
+	if nil != e {
+		c.JSON(http.StatusOK, e.Error())
+		return
+	} else if 0 != msg.Code && 10020 != msg.Code {
+		c.JSON(http.StatusOK, msg)
+		return
+	}
+
+	c.HTML(http.StatusOK, "post", msg.Data)
 }

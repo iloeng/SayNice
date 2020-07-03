@@ -28,7 +28,7 @@
 <script>
   function onVote(status) {
     var request = new XMLHttpRequest();
-    request.open("POST", "{{.APIDomain}}/vote/{{.Vote.token}}");
+    request.open("POST", "{{.VoteURL}}/{{.Vote.token}}");
     request.send(JSON.stringify({ "status": status }));
     request.onload = function () {
       console.log("vote " + request.status)

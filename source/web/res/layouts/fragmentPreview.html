@@ -1,0 +1,68 @@
+{{define "fgm_preview"}}
+<div id="preview" class="modal">
+  <div class="modal-background" onclick="onPreview()"></div>
+  <div class="modal-content">
+    <div style="margin: 0.2em; background-color: var(--background-body); --p:30px; --shadow:5; --br:30px">
+      <p id="previewContent" style="min-height: 80px;"></p>
+    </div>
+    <div style="display: flex; --px: 10px">
+      <div style="flex: 1; align-self: center;">
+        <input type="checkbox" id="sign" onchange="onSign(this)">
+        <label for="sign" style="color: #fff;">
+          {{.CommunityComplianceCheckBoxText}}
+        </label>
+        <a style="color: #fff;" href="compliance.html">>></a>
+      </div>
+      <button disabled id="submit" onclick="onSubmit()">{{.SubmitButtonText}}</button>
+    </div>
+  </div>
+  <div class="modal-close" onclick="onPreview()"></div>
+</div>
+<script>
+  var postID = 0
+
+  function onPreview() {
+    var previewDiv = document.getElementById("preview")
+    if (previewDiv.className == "modal") {
+      var postTextareaDiv = document.getElementById("postTextarea")
+      var previewContentDiv = document.getElementById("previewContent")
+      previewContentDiv.innerHTML = postTextareaDiv.value
+      previewDiv.className = "modal is-active"
+    } else {
+      previewDiv.className = "modal"
+    }
+  }
+
+  function newPost() {
+    var request = new XMLHttpRequest();
+    request.open("GET", "{{.APIDomain}}/new/post");
+    request.send();
+    request.onload = function () {
+      var data = JSON.parse(request.response);
+      postID = data.data;
+    }
+  }
+
+  function onSign(checkbox) {
+    var submitButton = document.getElementById("submit")
+    submitButton.disabled = !checkbox.checked
+  }
+
+  function onSubmit() {
+    var request = new XMLHttpRequest();
+    request.open("POST", "{{.APIDomain}}/post/" + postID);
+    request.send(JSON.stringify({ "text": postTextarea.value }));
+    request.onload = function () {
+      var resp = JSON.parse(request.response);
+      if (0 == resp.code) {
+        Snackbar.show({ text: "SUCCESS", });
+      } else {
+        Snackbar.show({ text: resp.erro, });
+      }
+      onPreview()
+    }
+  }
+
+  newPost()
+</script>
+{{end}}

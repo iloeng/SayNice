@@ -68,6 +68,7 @@ button.emoji {
   overflow: hidden;
   position: relative;
   padding: 0 5px;
+  white-space: pre-line;
 }
 
 .text button {
@@ -154,7 +155,6 @@ p.preview::after {
 
 .modal-background {
   background-color: rgba(10, 10, 10, .86);
-  ;
 }
 
 .modal, .modal-background {

@@ -10,7 +10,9 @@
   <title>{{.Title}}</title>
   <meta name="description" content="{{.Description}}">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bonsai.css@1.0.1/dist/bonsai.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar@0.1.16/dist/snackbar.min.css">
   <link rel="stylesheet" href="/static/saynice.css">
+  <script src="https://cdn.jsdelivr.net/npm/node-snackbar@0.1.16/dist/snackbar.min.js"></script>
   <style>
     /* 480 * 720, 720 * 1280, 1080 * 1920, 1660 * 2560, 2160 * 4096 */
     @media (max-width: 720px) {
@@ -112,26 +114,7 @@
     </div>
     <div id="feelings" class="feelings" style="font-size: 2em; padding: 0;">️</div>
   </div>
-  <div id="modal" class="modal">
-    <div class="modal-background" onclick="onPreview()"></div>
-    <div class="modal-content">
-      <div style="margin: 0.2em; background-color: var(--background-body); --p:30px; --shadow:5; --br:30px">
-        <p id="previewContent" style="min-height: 80px;"></p>
-        <time id="previewTime"></time>
-      </div>
-      <div style="display: flex; --px: 10px">
-        <div style="flex: 1; align-self: center;">
-          <input type="checkbox" id="communityComplianceCheckBox">
-          <label for="communityComplianceCheckBox" style="color: #fff;">
-            {{.CommunityComplianceCheckBoxText}}
-          </label>
-          <a style="color: #fff;" href="compliance.html">>></a>
-        </div>
-        <button onclick="onSubmit()">{{.SubmitButtonText}}</button>
-      </div>
-    </div>
-    <div class="modal-close" onclick="onPreview()"></div>
-  </div>
+  {{template "fgm_preview" .}}
 
   <!-- /////////////////////////////////////////////////////////////////// JS START -->
 
@@ -153,7 +136,6 @@
       "accent orange",
       "accent black",
     ]
-    var postID = 0
 
     function changTheme() {
       var i = Math.random() * 10000 % themes.length
@@ -179,62 +161,11 @@
     }
 
     function onPostChanged() {
-      var time = formatTime(new Date())
-      var previewContent = document.getElementById("previewContent")
-      var previewTime = document.getElementById("previewTime")
-      previewContent.innerText = postTextarea.value
-      previewTime.innerText = time
-
       var previewButton = document.getElementById("previewButton")
       previewButton.disabled = 0 == postTextarea.value.length || 5000 < postTextarea.value.length
 
       var wordCountSpan = document.getElementById("wordCountSpan")
       wordCountSpan.innerText = 5000 - postTextarea.value.length
-    }
-
-    function onPreview() {
-      var modal = document.getElementById("modal")
-      if (modal.className == "modal") {
-        modal.className = "modal is-active"
-      } else {
-        modal.className = "modal"
-      }
-    }
-
-    function newPost() {
-      var request = new XMLHttpRequest();
-      request.open("GET", "{{.APIDomain/new/post}}");
-      request.send();
-      request.onload = function () {
-        var data = JSON.parse(request.response);
-        postID = data.data;
-        console.log("new post id is " + postID)
-      }
-    }
-
-    function onSubmit() {
-      var request = new XMLHttpRequest();
-      request.open("POST", "{{.APIDomain}}/post/" + postID);
-      request.send(JSON.stringify({"text": postTextarea.value}));
-      request.onload = function () {
-        var data = JSON.parse(request.response);
-      }
-    }
-
-    const formatTime = date => {
-      const year = date.getFullYear()
-      const month = date.getMonth() + 1
-      const day = date.getDate()
-      const hour = date.getHours()
-      const minute = date.getMinutes()
-      const second = date.getSeconds()
-
-      return [year, month, day].map(formatNumber).join('-') + ' ' + [hour, minute, second].map(formatNumber).join(':')
-    }
-
-    const formatNumber = n => {
-      n = n.toString()
-      return n[1] ? n : '0' + n
     }
 
     function initEmoji() {// &#xXXXXX;
@@ -360,7 +291,6 @@
     initEmoji()
     onEmoji()
     onPostChanged()
-    newPost()
     console.log("welcome")
   </script>
 
