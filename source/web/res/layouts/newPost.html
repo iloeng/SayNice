@@ -2,7 +2,7 @@
 
 {{template "fgm_head" .}}
 
-<body id="body" class="primary">
+<body>
   {{template "fgm_toolbar" .}}
   <div id="content" class="writer">
     <div style="flex: 8; margin: 0.2em;">
@@ -32,32 +32,12 @@
   </div>
   {{template "fgm_preview" .}}
 
+  {{template "fgm_footer" .}}
+
   <!-- /////////////////////////////////////////////////////////////////// JS START -->
 
   <script>
     var postTextarea = document.getElementById("postTextarea")
-    var themes = [
-      "primary",
-      "secondary",
-      "green",
-      "blue",
-      "orange",
-      "red",
-      "black",
-      "accent primary",
-      "accent secondary",
-      "accent green",
-      "accent blue",
-      "accent blue",
-      "accent orange",
-      "accent black",
-    ]
-
-    function changTheme() {
-      var i = Math.random() * 10000 % themes.length
-      var x = themes[Math.floor(i)]
-      document.getElementById("body").className = x
-    }
 
     function onSymbol(symbol) {
       insertStringToPost(symbol)
@@ -203,7 +183,6 @@
       }
     }
 
-    changTheme()
     initEmoji()
     onEmoji()
     onPostChanged()

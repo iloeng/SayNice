@@ -295,10 +295,12 @@ p.preview::after {
 
 .primary, .secondary, .green, .blue, .orange, .red, .white, .grey, .black {
   --background-body: #ffffff;
+  --links: var(--primary);
 }
 
 .accent.primary, .accent.secondary, .accent.green, .accent.blue, .accent.red, .accent.orange, .accent.black {
-  --background-body: var(--accent-bg)
+  --background-body: var(--accent-bg);
+  --links: #ffffff;
 }
 
 .accent {

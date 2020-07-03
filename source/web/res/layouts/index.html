@@ -2,7 +2,7 @@
 
 {{template "fgm_head" .}}
 
-<body id="body" class="primary">
+<body>
   {{template "fgm_toolbar" .}}
   <div id="content" class="content">
     {{range $i, $post := $.Posts}}
@@ -31,36 +31,14 @@
   {{template "fgm_vote" .VoteData}}
   {{end}}
 
+  {{template "fgm_footer" .}}
   <script>
-    var themes = [
-      "primary",
-      "secondary",
-      "green",
-      "blue",
-      "orange",
-      "red",
-      "black",
-      "accent primary",
-      "accent secondary",
-      "accent green",
-      "accent blue",
-      "accent blue",
-      "accent orange",
-      "accent black",
-    ]
 
     var feelingsDiv = document.createElement("div")
     feelingsDiv.setAttribute("id", "feeling");
     feelingsDiv.className = "feeling"
 
     var currentPostId = 0
-
-    function changTheme() {
-      // var x = document.getElementById("theme").value;
-      var i = Math.random() * 10000 % themes.length
-      var x = themes[Math.floor(i)]
-      document.getElementById("body").className = x
-    }
 
     function onAll(tid) {
       var p = document.getElementById("t" + tid)
@@ -140,7 +118,6 @@
       postAttitudeDiv.appendChild(btn)
     }
 
-    changTheme()
     initEmoji()
   </script>
 </body>

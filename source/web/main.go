@@ -75,6 +75,7 @@ func initTmpl(tmpl *template.Template) {
 
 	htmls := []string{
 		"fragmentHead.html",
+		"fragmentFooter.html",
 		"fragmentToolbar.html",
 		"index.html",
 		"newPost.html",
