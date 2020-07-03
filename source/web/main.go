@@ -18,18 +18,6 @@ type APIMessage struct {
 	Data interface{} `json:"data"`
 }
 
-// Post 主题
-// Text comment:'主题内容';
-// Feelings comment:'作者的感受';
-// Attitudes comment:'主题状态, 0: IDLE, 1: ALLOWED, 2: UNALLOWED, 3: ABSTAIN, 4: REPORTED';
-// Remark comment:'评语，备注';
-type Post struct {
-	ID        uint   `json:"id"`
-	Text      string `json:"text"`
-	Remark    string `json:"remark" gorm:"type:text;default:'';"`
-	CreatedAt string `json:"createdAt,omitempty"`
-}
-
 // NewPostData new/post.html 页面片段
 type NewPostData struct {
 	Title                           string
@@ -60,6 +48,15 @@ type IndexData struct {
 	VoteData         VoteData
 }
 
+// PostData 主题单页数据
+type PostData struct {
+	Title       string
+	Description string
+	Code        int
+	Erro        string
+	Post        interface{}
+}
+
 var (
 	// Domain 请求域
 	Domain string
@@ -73,33 +70,33 @@ func init() {
 	flag.StringVar(&Domain, "D", "http://127.0.0.1:18823/v1", "请求域")
 }
 
+func initTmpl(tmpl *template.Template) {
+	box := packr.NewBox("./res/layouts")
+
+	htmls := []string{
+		"fragmentHead.html",
+		"fragmentToolbar.html",
+		"index.html",
+		"newPost.html",
+		"post.html",
+		"fragmentVote.html",
+		"fragmentPreview.html",
+	}
+
+	for _, v := range htmls {
+		indexTmpl := tmpl.New(v)
+		data, _ := box.FindString(v)
+		indexTmpl.Parse(data)
+	}
+}
+
 func main() {
 	flag.Parse()
 	flag.Usage()
 
-	box := packr.NewBox("./res/layouts")
-
 	tmpl := template.New("")
 
-	indexTmpl := tmpl.New("index")
-	data, _ := box.FindString("index.html")
-	indexTmpl.Parse(data)
-
-	indexTmpl = tmpl.New("newPost")
-	data, _ = box.FindString("newPost.html")
-	indexTmpl.Parse(data)
-
-	indexTmpl = tmpl.New("post")
-	data, _ = box.FindString("post.html")
-	indexTmpl.Parse(data)
-
-	indexTmpl = tmpl.New("fragmentVote")
-	data, _ = box.FindString("fragmentVote.html")
-	indexTmpl.Parse(data)
-
-	indexTmpl = tmpl.New("fragmentPreview")
-	data, _ = box.FindString("fragmentPreview.html")
-	indexTmpl.Parse(data)
+	initTmpl(tmpl)
 
 	staticBox := packr.NewBox("./res/static")
 
@@ -107,7 +104,7 @@ func main() {
 
 	router.GET("/", indexHTML)
 	router.GET("/new/post", newPostHTML)
-	router.POST("/post/:id", postHTML)
+	router.GET("/post/:id", postHTML)
 
 	router.SetHTMLTemplate(tmpl)
 	router.StaticFS("/static", staticBox)
@@ -146,7 +143,7 @@ func indexHTML(c *gin.Context) {
 		}
 	}
 
-	c.HTML(http.StatusOK, "index", data)
+	c.HTML(http.StatusOK, "index.html", data)
 }
 
 func newPostHTML(c *gin.Context) {
@@ -161,21 +158,27 @@ func newPostHTML(c *gin.Context) {
 		SubmitButtonText:                "发布",
 	}
 
-	c.HTML(http.StatusOK, "newPost", data)
+	c.HTML(http.StatusOK, "newPost.html", data)
 }
 
 func postHTML(c *gin.Context) {
 	var msg APIMessage
 
-	e := util.GetJSON(uri("/post"), &msg)
+	id := c.Param("id")
+	e := util.GetJSON(uri("/post/"+id), &msg)
 
 	if nil != e {
 		c.JSON(http.StatusOK, e.Error())
 		return
-	} else if 0 != msg.Code && 10020 != msg.Code {
-		c.JSON(http.StatusOK, msg)
-		return
 	}
 
-	c.HTML(http.StatusOK, "post", msg.Data)
+	post := &PostData{
+		Title:       "SayNice - 匿名情感倾诉社区、完美树洞、你的 OK 工具人",
+		Description: "",
+		Code:        msg.Code,
+		Erro:        msg.Erro,
+		Post:        msg.Data,
+	}
+
+	c.HTML(http.StatusOK, "post.html", post)
 }

@@ -1,1 +1,37 @@
-SUCCESS
+<html>
+
+{{template "fgm_head" .}}
+
+<body id="body" class="primary">
+  {{template "fgm_toolbar" .}}
+  <div id="content" class="content">
+    <div style="padding:25px;">
+      {{if eq .Code 0}}
+      <p id="t{{.Post.id}}" class="text show-more">{{.Post.text}}</p>
+      <div style="display: flex; justify-content: end; padding: 10px 5px">
+        <span style="flex: 1">{{.Post.createdAt}}</span>
+      </div>
+      {{else}}
+      {{if eq .Code 30020}}
+      <p>数据库访问失败，信息日志：</p>
+      <p>{{.Erro}}</p>
+      {{else if eq .Code 30030}}
+      <p>主题内容审核未通过，详细信息：</p>
+      <p>{{.Erro}}</p>
+      {{else if eq .Code 30040}}
+      <p>内容含有太多争议, 正处于重新审查状态。</p>
+      {{else if eq .Code 30050}}
+      <p>内容被举报了，举报原因：</p>
+      <p>{{.Erro}}</p>
+      {{else if eq .Code 30060}}
+      <p>主题内容正在审查中，请耐心等待。</p>
+      {{end}}
+      <hr style="margin: 20px 0;">
+      <a href="/">返回首页</a>
+      <a href="/new/post">创建新主题</a>
+      {{end}}
+    </div>
+  </div>
+</body>
+
+</html>

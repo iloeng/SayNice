@@ -1,94 +1,10 @@
 <html>
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <!-- <link rel="icon" href="../drawables/favicon.ico" type="image/x-icon" />
-    <link rel="shortcut icon" href="../drawables/favicon.ico" type="image/x-icon" /> -->
-  <meta name="theme-color" content="#efefef">
-
-  <title>{{.Title}}</title>
-  <meta name="description" content="{{.Description}}">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bonsai.css@1.0.1/dist/bonsai.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar@0.1.16/dist/snackbar.min.css">
-  <link rel="stylesheet" href="/static/saynice.css">
-  <script src="https://cdn.jsdelivr.net/npm/node-snackbar@0.1.16/dist/snackbar.min.js"></script>
-  <style>
-    /* 480 * 720, 720 * 1280, 1080 * 1920, 1660 * 2560, 2160 * 4096 */
-    @media (max-width: 720px) {
-      .menu {
-        display: flex;
-        margin-bottom: 15px;
-        padding: 5px;
-        background-color: #00000009;
-      }
-
-      .content {
-        max-width: 100%;
-      }
-
-      .input {
-        height: 280px;
-      }
-    }
-
-    @media (min-width: 720px) {
-      .menu {
-        display: flex;
-        margin-bottom: 30px;
-        padding: 10px;
-        background-color: #00000009;
-      }
-
-      .content {
-        max-width: 860px;
-        margin: auto;
-        display: flex;
-      }
-
-      .input {
-        height: 480px;
-      }
-
-      .feelings {
-        height: 480px;
-        flex: 3;
-        margin-left: 1em;
-        overflow: auto;
-      }
-    }
-
-    @media (min-width: 1280px) {
-      .menu {
-        display: flex;
-        margin-bottom: 60px;
-        padding: 20px;
-        background-color: #00000009;
-      }
-    }
-
-    @media (min-width: 1920px) {
-
-      /* 复用了 @media (min-width: 720px) 的 content 类属性 */
-      .content {
-        max-width: 1280px;
-      }
-    }
-  </style>
-</head>
+{{template "fgm_head" .}}
 
 <body id="body" class="primary">
-  <nav id="menu" class="menu">
-    <div style="width: auto; padding: 0 10px;">
-      <a href="/">
-        <h2>SayNice</h2>
-      </a>
-    </div>
-    <div style="flex: 1; text-align: end; justify-content: end; align-self: flex-end;">
-      <h3>33° ⛅</h3>
-    </div>
-  </nav>
-  <div id="content" class="content">
+  {{template "fgm_toolbar" .}}
+  <div id="content" class="writer">
     <div style="flex: 8; margin: 0.2em;">
       <div class="input" style="background-color: #fff; --p:20px; --shadow:5; --levitate-hvr:5; --br:30px;">
         <textarea id="postTextarea" placeholder="{{.PostTextareaPlaceholder}}" onkeyup="onPostChanged()"

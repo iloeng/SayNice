@@ -1,5 +1,76 @@
 /* /////////////////////////////////////////////////////////////////// 响应式布局 END */
 
+@media (max-width: 640px) {
+  .menu {
+    display: flex;
+    margin-bottom: 15px;
+    padding: 5px;
+    background-color: #00000009;
+  }
+  .content {
+    max-width: 100%;
+  }
+  .writer {
+    max-width: 100%;
+  }
+  .input {
+    height: 280px;
+  }
+}
+
+@media (min-width: 640px) {
+  .menu {
+    display: flex;
+    margin-bottom: 30px;
+    padding: 10px;
+    background-color: #00000009;
+  }
+  .writer {
+    max-width: 860px;
+    margin: auto;
+    display: flex;
+  }
+  .input {
+    height: 480px;
+  }
+  .feelings {
+    height: 480px;
+    flex: 3;
+    margin-left: 1em;
+    overflow: auto;
+  }
+}
+
+@media (min-width: 640px) and (max-width: 880px) {
+  .content {
+    max-width: 640px;
+    margin: auto;
+  }
+}
+
+@media (min-width: 880px) {
+  .content {
+    max-width: 640px;
+    margin-left: 120px;
+  }
+}
+
+@media (min-width: 1280px) {
+  .menu {
+    display: flex;
+    margin-bottom: 60px;
+    padding: 20px;
+    background-color: #00000009;
+  }
+}
+
+@media (min-width: 1920px) {
+  /* 复用了 @media (min-width: 720px) 的 content 类属性 */
+  .writer {
+    max-width: 1280px;
+  }
+}
+
 footer {
   margin: 2em 0 0.5em 0;
   font-size: 12px;
