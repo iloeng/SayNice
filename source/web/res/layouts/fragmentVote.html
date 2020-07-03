@@ -11,7 +11,7 @@
         {{range $i, $article := $.Vote.raSpace.articles}}
         <div id="article{{$i}}">
           <p style="font-size: 20px;">{{$article}}</p>
-          <button onclick="onVote(2)">有</button>
+          <button onclick="onVote(2, {{$article}})">有</button>
           <button onclick="onNext({{$i}})">无</button>
         </div>
         {{end}}
@@ -26,10 +26,10 @@
   <div class="modal-close" onclick="onVote(3)"></div>
 </div>
 <script>
-  function onVote(status) {
+  function onVote(status, remark="") {
     var request = new XMLHttpRequest();
     request.open("POST", "{{.VoteURL}}/{{.Vote.token}}");
-    request.send(JSON.stringify({ "status": status }));
+    request.send(JSON.stringify({ "status": status, "remark": remark }));
     request.onload = function () {
       console.log("vote " + request.status)
 
