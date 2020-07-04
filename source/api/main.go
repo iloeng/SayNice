@@ -52,11 +52,13 @@ const (
 const (
 	PrefixRASPID = "RASPID"
 	PrefixTOKEN  = "TOKEN"
+	PrefixPost   = "POSTID"
 )
 
 // 缓存超时时间
 const (
-	Expire3Days = 259200 // 3 days‬
+	Expire3Days   = 259200   // 3 days‬
+	Expire300Days = 25920000 // 300 days‬
 )
 
 const (
@@ -146,7 +148,7 @@ type Emoji struct {
 // Emoji comment:'他们对此主题的表情';
 type Attitude struct {
 	ID        uint      `json:"id" gorm:"primary_key;AUTO_INCREMENT:10000"`
-	Post      Post      `json:"post,omitempty" gorm:"foreignkey:PostID;"`
+	Post      *Post     `json:"post,omitempty" gorm:"foreignkey:PostID;"`
 	PostID    uint      `json:"postId"`
 	Emoji     *Emoji    `json:"emoji,omitempty" gorm:"foreignkey:EmojiID;"`
 	EmojiID   uint      `json:"emojiId"`
@@ -156,17 +158,17 @@ type Attitude struct {
 // Post 主题
 // Text comment:'主题内容';
 // Feelings comment:'作者的感受';
-// Attitudes comment:'主题状态, 0: IDLE, 1: ALLOWED, 2: UNALLOWED, 3: ABSTAIN, 4: REPORTED';
+// Status comment:'主题状态, 0: IDLE, 1: ALLOWED, 2: UNALLOWED, 3: ABSTAIN, 4: REPORTED';
 // Remark comment:'评语，备注';
 type Post struct {
-	ID        uint       `json:"id" gorm:"primary_key;AUTO_INCREMENT:10000"`
-	Text      string     `json:"text" gorm:"type:text;default:'';not null;"`
-	Feelings  []Feeling  `json:"feelings,omitempty" gorm:"many2many:post_feeling;"`
-	Attitudes []Attitude `json:"attitudes,omitempty"`
-	Token     string     `json:"-" gorm:"type:text;default:'';not null;"`
-	Status    int        `json:"status" gorm:"type:integer;default:0;not null;"`
-	Remark    string     `json:"remark" gorm:"type:text;default:'';"`
-	CreatedAt *JSONTime  `json:"createdAt,omitempty"`
+	ID        uint          `json:"id" gorm:"primary_key;AUTO_INCREMENT:10000"`
+	Text      string        `json:"text" gorm:"type:text;default:'';not null;"`
+	Feelings  []Feeling     `json:"feelings,omitempty" gorm:"many2many:post_feeling;"`
+	Attitudes *map[uint]int `json:"attitudes,omitempty" gorm:"-"`
+	Token     string        `json:"-" gorm:"type:text;default:'';not null;"`
+	Status    int           `json:"status" gorm:"type:integer;default:0;not null;"`
+	Remark    string        `json:"remark" gorm:"type:text;default:'';"`
+	CreatedAt *JSONTime     `json:"createdAt,omitempty"`
 }
 
 // RASpace 随机匿名空间
@@ -336,6 +338,7 @@ func main() {
 	defer db.Close()
 
 	startRASpace()
+	startPostAttitudeCache()
 
 	router := gin.Default()
 	v1 := router.Group("/v1")
@@ -367,6 +370,20 @@ func startRASpace() {
 
 	for _, space := range raSpaces {
 		setRASpaceCache(space)
+	}
+}
+
+func startPostAttitudeCache() {
+	var attitudes []Attitude
+
+	e := db.Find(&attitudes).Error
+
+	if nil != e {
+		return
+	}
+
+	for _, attitude := range attitudes {
+		setPostAttitude(attitude.PostID, attitude.EmojiID)
 	}
 }
 
@@ -406,7 +423,7 @@ func listPost(c *gin.Context) (int, string, interface{}) {
 		order = 0
 	}
 
-	var postList []Post
+	var postList []*Post
 
 	tx := db.Where("status=?", StatusAllowed).Limit(limit).Offset(offset)
 
@@ -420,6 +437,11 @@ func listPost(c *gin.Context) (int, string, interface{}) {
 		return 10010, e.Error(), nil
 	} else if 0 == len(postList) {
 		return 10020, "No posts", nil
+	}
+
+	for _, post := range postList {
+		attitudes, _ := getPostAttitudes(post.ID)
+		post.Attitudes = &attitudes
 	}
 
 	return CodeSuccess, "", postList
@@ -464,6 +486,9 @@ func getPost(c *gin.Context) (int, string, interface{}) {
 
 	switch post.Status {
 	case StatusAllowed:
+		attitudes, _ := getPostAttitudes(post.ID)
+		post.Attitudes = &attitudes
+
 		return CodeSuccess, "", post
 	case StatusUnallowed:
 		return 30030, "Review failed, it's " + post.Remark, nil
@@ -557,11 +582,13 @@ func submitAttitude(c *gin.Context) (int, string, interface{}) {
 		EmojiID: data.EmojiID,
 	}
 
-	e = db.Set("gorm:association_autoupdate", false).Create(&attitude).Error
+	e = db.Create(&attitude).Error
 
 	if nil != e {
 		return 50002, e.Error(), nil
 	}
+
+	setPostAttitude(data.PostID, data.EmojiID)
 
 	return CodeSuccess, "", attitude.ID
 }
@@ -643,13 +670,13 @@ func getRASpace(c *gin.Context) (int, string, interface{}) {
 		}
 
 		articles := []string{
-			"是否含有政治内容？",
-			"是否含有军事和战争内容？",
+			"是否为毫无意义的内容？",
+			"是否含有政治、军事或战争内容？",
 			"是否含有性和毒品交易内容？",
-			"是否含有赌博、暴力和血腥内容？",
+			"是否含有赌博、暴力或血腥内容？",
 			"是否含有未经证实的新闻？",
 			"是否含有地区、种族以及性别歧视的言论？",
-			"是否含有令人反感的广告？",
+			"是否含有令人反感的广告或不文明用语？",
 			"是否出现了具体的人名、地址、邮箱、手机号、微信号、Fackbook号等联系方式？",
 		}
 
@@ -895,6 +922,42 @@ func setRASpaceCache(space RASpace) error {
 	box.Add(space.ID)
 
 	return cache.Set(key(PrefixRASPID, space.ID), spaceByte, Expire3Days)
+}
+
+func setPostAttitude(postID uint, attitudeID uint) error {
+	attiudes, e := getPostAttitudes(postID)
+
+	if nil != e {
+		attiudes = make(map[uint]int, 8)
+		attiudes[attitudeID] = 0
+	} else {
+		attiudes[attitudeID]++
+	}
+
+	attiudesByte, e := json.Marshal(attiudes)
+
+	if nil != e {
+		return e
+	}
+
+	return cache.Set(key(PrefixPost, postID), attiudesByte, Expire300Days)
+}
+
+func getPostAttitudes(postID uint) (map[uint]int, error) {
+	bytes, e := cache.Get(key(PrefixPost, postID))
+
+	if nil != e {
+		return nil, e
+	}
+
+	var attiudes map[uint]int
+	e = json.Unmarshal(bytes, &attiudes)
+
+	if nil != e {
+		return nil, e
+	}
+
+	return attiudes, nil
 }
 
 func key(prefix string, t interface{}) []byte {
