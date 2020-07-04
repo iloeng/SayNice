@@ -113,7 +113,7 @@ button.none {
   margin: 0px;
 }
 
-button.emoji {
+button.emoji, button.attitude {
   min-width: 1em;
   width: auto;
   background-color: #00000000;

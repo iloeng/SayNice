@@ -15,7 +15,12 @@
           <button class="none">{{$.ReportButtonText}}</button>
         </div>
       </div>
-      <div id="a{{$post.id}}" style="background-color: #00000009; font-size: 1.3em;"></div>
+      <div id="a{{$post.id}}" style="background-color: #00000009; font-size: 1.3em;">
+        {{range $emojiId, $count := $post.attitudes}}
+        <button class="attitude" data-id="{{$emojiId}}" data-count="{{$count}}"
+          onclick='onAttitude(this, "{{$post.id}}")'></button>
+        {{end}}
+      </div>
       <div id="f{{$post.id}}" style="background-color: #00000009; font-size: 1.3em;" hidden></div>
     </div>
     {{end}}
@@ -59,8 +64,10 @@
     }
 
     function onWrite() {
-      window.location.assign("./new/post")
+      window.location.assign("/new/post")
     }
+
+    var emojiMap = new Map()
 
     function loadEmoji(emojis) {
       var feelings = []
@@ -73,6 +80,7 @@
             temp[temp.length] = emoji
           }
           feelings[feeling.name] = temp
+          emojiMap.set(emoji.id, emoji.show)
         })
       });
 
@@ -86,24 +94,40 @@
         items.forEach(item => {
           var btn = document.createElement("button")
           btn.className = "emoji"
-          btn.id = item.show
+          btn.id = item.id
           btn.title = item.name
           btn.onclick = function () {
-            onAttitude(item.show)
+            onAttitude(currentPostId, item.id)
           }
           btn.innerHTML = item.show
           div.appendChild(btn)
         });
         feelingsDiv.append(div)
       }
+
+      var attitudeBtns = document.getElementsByClassName("attitude")
+      for (let index = 0; index < attitudeBtns.length; index++) {
+        const element = attitudeBtns[index];
+
+        let id = parseInt(element.dataset.id)
+        let count = element.dataset.count
+        element.innerHTML = emojiMap.get(id) + " +" + count
+      }
     }
 
-    function onAttitude(show) {
-      var postAttitudeDiv = document.getElementById("a" + currentPostId)
-      var btn = document.createElement("button")
-      btn.className = "emoji"
-      btn.innerHTML = show
-      postAttitudeDiv.appendChild(btn)
+    function onAttitude(element, postId, emojiId) {
+      postId = parseInt(postId)
+      emojiId = parseInt(element.dataset.id)
+      httpPost("{{.APIDomain}}/say", { "postId": postId, "emojiId": emojiId }, function (resp) {
+        if (0 == resp.code) {
+          Snackbar.show({ text: "SUCCESS", });
+          let count = parseInt(element.dataset.count) + 1
+          element.innerHTML = emojiMap.get(emojiId) + " +" + count
+          element.dataset.count = count
+        } else {
+          Snackbar.show({ text: resp.erro, });
+        }
+      })
     }
 
     httpGet("/static/emoji.json", loadEmoji)

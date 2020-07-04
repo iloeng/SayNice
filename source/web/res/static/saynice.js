@@ -58,6 +58,7 @@ function httpGet(url, callback) {
 function httpPost(url, data, callback) {
   var request = new XMLHttpRequest();
   request.open("POST", url);
+  request.responseType = "json";
   request.send(JSON.stringify(data));
   request.onload = function () {
     if (200 != request.status) {
