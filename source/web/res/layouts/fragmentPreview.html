@@ -34,9 +34,8 @@
   }
 
   function newPost() {
-    httpGet("{{.APIDomain}}/new/post", function (resp) {
-      var data = JSON.parse(request.response);
-      postID = data.data;
+    apiGet("{{.APIDomain}}/new/post", function (resp) {
+      postID = resp.data;
     })
   }
 
@@ -46,7 +45,7 @@
   }
 
   function onSubmit() {
-    httpPost("{{.APIDomain}}/post/" + postID, { "text": postTextarea.value }, function (resp) {
+    apiPost("{{.APIDomain}}/post/" + postID, { "text": postTextarea.value }, function (resp) {
       if (0 == resp.code) {
         Snackbar.show({ text: "SUCCESS", });
         window.location = "/post/" + postID

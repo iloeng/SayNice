@@ -68,3 +68,39 @@ function httpPost(url, data, callback) {
     }
   }
 }
+
+function apiGet(url, success, failure = undefined) {
+  httpGet(url, function (resp) {
+    if (0 == resp.code) {
+      success(resp)
+    } else if (undefined == failure) {
+      Snackbar.show({ text: "请求失败: " + resp.erro, });
+    } else {
+      failure(resp)
+    }
+  })
+}
+
+function apiPost(url, data, success, failure = undefined) {
+  httpPost(url, data, function (resp) {
+    if (0 == resp.code) {
+      success(resp)
+    } else if (undefined == failure) {
+      Snackbar.show({ text: "提交失败: " + resp.erro, });
+    } else {
+      failure(resp)
+    }
+  })
+}
+
+function autoLoad(callback) {
+  var windowH = document.documentElement.clientHeight;//网页可视区域高度
+  //windowH = window.innerHeight;
+  //windowH=window.scrollY;
+  var documentH = document.documentElement.offsetHeight;
+  //documentH=document.documentElement.offsetHeight;
+  var scrollH = document.documentElement.scrollTop;
+  if (windowH + scrollH >= documentH) {
+    callback()
+  }
+}

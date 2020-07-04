@@ -15,18 +15,20 @@
           <button class="none">{{$.ReportButtonText}}</button>
         </div>
       </div>
-      <div id="a{{$post.id}}" style="background-color: #00000009; font-size: 1.3em;">
+      <div id="a{{$post.id}}" class="attitudes">
         {{range $emojiId, $count := $post.attitudes}}
         <button class="attitude" data-id="{{$emojiId}}" data-count="{{$count}}"
           onclick='onAttitudeAppend(this, "{{$post.id}}", "{{$emojiId}}")'></button>
         {{end}}
       </div>
-      <div id="f{{$post.id}}" style="background-color: #00000009; font-size: 1.3em;" hidden></div>
+      <div id="f{{$post.id}}" class="emojis" hidden></div>
     </div>
     {{end}}
+    <div style="display: flex; padding: 25px;">
+      <button id="nextPage" class="none" style="flex: 1;" onclick="onNextPage()">下一页</button>
+    </div>
   </div>
-  <button onclick="onWrite()"
-    style="position: fixed; height: 48px; width: 48px; bottom: 48px; right: 32px; text-align: center; --p: 0px; --br:90px; --shadow:5;">
+  <button onclick="onWrite()" class="float" style="--shadow: 5;">
     <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor"
       stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit">
       <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
@@ -39,6 +41,8 @@
   {{template "fgm_footer" .}}
   <script>
 
+    var postCount = {{ len .Posts }}
+    var emojiMap = new Map()
     var feelingsDiv = document.createElement("div")
     feelingsDiv.setAttribute("id", "feeling");
     feelingsDiv.className = "feeling"
@@ -66,8 +70,6 @@
     function onWrite() {
       window.location.assign("/new/post")
     }
-
-    var emojiMap = new Map()
 
     function loadEmoji(emojis) {
       var feelings = []
@@ -105,65 +107,83 @@
         feelingsDiv.append(div)
       }
 
-      var attitudeBtns = document.getElementsByClassName("attitude")
-      for (let index = 0; index < attitudeBtns.length; index++) {
-        const element = attitudeBtns[index];
+      var attitudesDivs = document.getElementsByClassName("attitudes")
+      for (let index = 0; index < attitudesDivs.length; index++) {
+        const attitudesDiv = attitudesDivs[index];
 
-        let id = parseInt(element.dataset.id)
-        let count = parseInt(element.dataset.count)
+        var attitudeBtns = attitudesDiv.getElementsByClassName("attitude")
 
-        if (1 == count) {
-          element.innerHTML = emojiMap.get(id)
-        } else {
-          element.innerHTML = emojiMap.get(id) + " +" + count
+        if (0 == attitudeBtns.length) {
+          continue
+        }
+
+        // 重新排序
+        attitudeBtns = Array.prototype.slice.call(attitudeBtns)
+        attitudeBtns.sort(sortAttitudeCount)
+
+        for (let index = 0; index < attitudeBtns.length; index++) {
+          const element = attitudeBtns[index];
+
+          let id = parseInt(element.dataset.id)
+          let count = parseInt(element.dataset.count)
+
+          if (1 == count) {
+            element.innerHTML = emojiMap.get(id)
+          } else {
+            element.innerHTML = emojiMap.get(id) + "+" + count
+          }
+
+          attitudesDiv.appendChild(element)
         }
       }
     }
 
+    function sortAttitudeCount(a, b) {
+      let acount = parseInt(a.dataset.count)
+      let bcount = parseInt(b.dataset.count)
+      return bcount - acount
+    }
+
     function onAttitudeNew(postId, emojiId) {
-      httpPost("{{.APIDomain}}/say", { "postId": postId, "emojiId": emojiId }, function (resp) {
-        if (0 == resp.code) {
-          var attitudesDiv = document.getElementById("a" + postId)
-          var attitudeBtns = attitudesDiv.getElementsByClassName("attitude")
-          var attitudeBtn = undefined
-          for (let index = 0; index < attitudeBtns.length; index++) {
-            const element = attitudeBtns[index];
+      apiPost("{{.APIDomain}}/say", { "postId": postId, "emojiId": emojiId }, function (resp) {
+        var attitudesDiv = document.getElementById("a" + postId)
+        var attitudeBtns = attitudesDiv.getElementsByClassName("attitude")
+        var attitudeBtn = undefined
+        for (let index = 0; index < attitudeBtns.length; index++) {
+          const element = attitudeBtns[index];
 
-            let id = parseInt(element.dataset.id)
+          let id = parseInt(element.dataset.id)
 
-            if (id == emojiId) {
-              attitudeBtn = element
-            }
+          if (id == emojiId) {
+            attitudeBtn = element
           }
-
-          if (undefined == attitudeBtn) {
-            attitudeBtn = document.createElement("button")
-            attitudeBtn.className = "attitude"
-            attitudeBtn.dataset.id = emojiId
-            attitudeBtn.dataset.count = 1
-            attitudeBtn.innerHTML = emojiMap.get(emojiId)
-
-            attitudesDiv.appendChild(attitudeBtn)
-          } else {
-            let count = parseInt(attitudeBtn.dataset.count) + 1
-            attitudeBtn.innerHTML = emojiMap.get(emojiId) + " +" + count
-            attitudeBtn.dataset.count = count
-          }
-
-          Snackbar.show({ text: "SUCCESS", });
-        } else {
-          Snackbar.show({ text: resp.erro, });
         }
+
+        if (undefined == attitudeBtn) {
+          attitudeBtn = document.createElement("button")
+          attitudeBtn.className = "attitude"
+          attitudeBtn.dataset.id = emojiId
+          attitudeBtn.dataset.count = 1
+          attitudeBtn.innerHTML = emojiMap.get(emojiId)
+
+          attitudesDiv.appendChild(attitudeBtn)
+        } else {
+          let count = parseInt(attitudeBtn.dataset.count) + 1
+          attitudeBtn.innerHTML = emojiMap.get(emojiId) + "+" + count
+          attitudeBtn.dataset.count = count
+        }
+
+        Snackbar.show({ text: "SUCCESS", });
       })
     }
 
     function onAttitudeAppend(element, postId) {
       postId = parseInt(postId)
       emojiId = parseInt(element.dataset.id)
-      httpPost("{{.APIDomain}}/say", { "postId": postId, "emojiId": emojiId }, function (resp) {
+      apiPost("{{.APIDomain}}/say", { "postId": postId, "emojiId": emojiId }, function (resp) {
         if (0 == resp.code) {
           let count = parseInt(element.dataset.count) + 1
-          element.innerHTML = emojiMap.get(emojiId) + " +" + count
+          element.innerHTML = emojiMap.get(emojiId) + "+" + count
           element.dataset.count = count
 
           Snackbar.show({ text: "SUCCESS", });
@@ -173,7 +193,22 @@
       })
     }
 
+    function onNextPage() {
+      apiGet("{{.APIDomain}}/posts?offset=" + postCount, function (resp) {
+
+      }, function (resp) {
+        if (10020 == resp.code) { // 没有更多了
+          var nextPageBtn = document.getElementById("nextPage")
+          nextPageBtn.hidden = true
+        } else {
+          Snackbar.show({ text: "请求失败: " + resp.erro, });
+        }
+      })
+    }
+
     httpGet("/static/emoji.json", loadEmoji)
+
+    window.onscroll = onNextPage()
   </script>
 </body>
 

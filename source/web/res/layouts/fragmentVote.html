@@ -11,8 +11,8 @@
         {{range $i, $article := $.Vote.raSpace.articles}}
         <div id="article{{$i}}">
           <p style="font-size: 20px;">{{$article}}</p>
-          <button onclick="onVote(2, {{$article}})">有</button>
-          <button onclick="onNext({{$i}})">无</button>
+          <button onclick="onVote(2, {{$article}})">是</button>
+          <button onclick="onNext({{$i}})">否</button>
         </div>
         {{end}}
         <div>
@@ -27,7 +27,7 @@
 </div>
 <script>
   function onVote(status, remark = "") {
-    httpPost("{{.VoteURL}}/{{.Vote.token}}", { "status": status, "remark": remark }, function (resp) {
+    apiPost("{{.VoteURL}}/{{.Vote.token}}", { "status": status, "remark": remark }, function (resp) {
       var spaceModal = document.getElementById("space")
       spaceModal.className = "modal"
 
