@@ -64,19 +64,6 @@
       wordCountSpan.innerText = 5000 - postTextarea.value.length
     }
 
-    function initEmoji() {// &#xXXXXX;
-      // var request = new XMLHttpRequest();
-      // request.open("GET", "/static/emoji.json");
-      // request.responseType = "json";
-      // request.send();
-      // request.onload = function () {
-      //   var emojis = request.response;
-
-      //   loadEmoji(emojis)
-      // }
-      httpGet("/static/emoji.json", loadEmoji)
-    }
-
     function loadEmoji(emojis) {
       var feelings = []
       emojis.forEach(emoji => {
@@ -184,7 +171,7 @@
       }
     }
 
-    initEmoji()
+    httpGet("/static/emoji.json", loadEmoji)
     onEmoji()
     onPostChanged()
     console.log("welcome")

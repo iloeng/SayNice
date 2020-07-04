@@ -34,13 +34,6 @@
   }
 
   function newPost() {
-    // var request = new XMLHttpRequest();
-    // request.open("GET", "{{.APIDomain}}/new/post");
-    // request.send();
-    // request.onload = function () {
-    //   var data = JSON.parse(request.response);
-    //   postID = data.data;
-    // }
     httpGet("{{.APIDomain}}/new/post", function (resp) {
       var data = JSON.parse(request.response);
       postID = data.data;
@@ -53,19 +46,6 @@
   }
 
   function onSubmit() {
-    // var request = new XMLHttpRequest();
-    // request.open("POST", "{{.APIDomain}}/post/" + postID);
-    // request.send(JSON.stringify({ "text": postTextarea.value }));
-    // request.onload = function () {
-    //   var resp = JSON.parse(request.response);
-    //   if (0 == resp.code) {
-    //     Snackbar.show({ text: "SUCCESS", });
-    //     window.location = "/post/" + postID
-    //   } else {
-    //     Snackbar.show({ text: resp.erro, });
-    //   }
-    //   onPreview()
-    // }
     httpPost("{{.APIDomain}}/post/" + postID, { "text": postTextarea.value }, function (resp) {
       if (0 == resp.code) {
         Snackbar.show({ text: "SUCCESS", });

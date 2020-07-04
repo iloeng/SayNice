@@ -62,19 +62,6 @@
       window.location.assign("./new/post")
     }
 
-    function initEmoji() {// &#xXXXXX;
-      httpGet("/static/emoji.json", loadEmoji)
-      // var request = new XMLHttpRequest();
-      // request.open("GET", "/static/emoji.json");
-      // request.responseType = "json";
-      // request.send();
-      // request.onload = function () {
-      //   var emojis = request.response;
-
-      //   loadEmoji(emojis)
-      // }
-    }
-
     function loadEmoji(emojis) {
       var feelings = []
       emojis.forEach(emoji => {
@@ -119,7 +106,7 @@
       postAttitudeDiv.appendChild(btn)
     }
 
-    initEmoji()
+    httpGet("/static/emoji.json", loadEmoji)
   </script>
 </body>
 
