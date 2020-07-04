@@ -18,7 +18,7 @@
       <div id="a{{$post.id}}" style="background-color: #00000009; font-size: 1.3em;">
         {{range $emojiId, $count := $post.attitudes}}
         <button class="attitude" data-id="{{$emojiId}}" data-count="{{$count}}"
-          onclick='onAttitude(this, "{{$post.id}}")'></button>
+          onclick='onAttitudeAppend(this, "{{$post.id}}", "{{$emojiId}}")'></button>
         {{end}}
       </div>
       <div id="f{{$post.id}}" style="background-color: #00000009; font-size: 1.3em;" hidden></div>
@@ -97,7 +97,7 @@
           btn.id = item.id
           btn.title = item.name
           btn.onclick = function () {
-            onAttitude(currentPostId, item.id)
+            onAttitudeNew(currentPostId, item.id)
           }
           btn.innerHTML = item.show
           div.appendChild(btn)
@@ -110,20 +110,63 @@
         const element = attitudeBtns[index];
 
         let id = parseInt(element.dataset.id)
-        let count = element.dataset.count
-        element.innerHTML = emojiMap.get(id) + " +" + count
+        let count = parseInt(element.dataset.count)
+
+        if (1 == count) {
+          element.innerHTML = emojiMap.get(id)
+        } else {
+          element.innerHTML = emojiMap.get(id) + " +" + count
+        }
       }
     }
 
-    function onAttitude(element, postId, emojiId) {
+    function onAttitudeNew(postId, emojiId) {
+      httpPost("{{.APIDomain}}/say", { "postId": postId, "emojiId": emojiId }, function (resp) {
+        if (0 == resp.code) {
+          var attitudesDiv = document.getElementById("a" + postId)
+          var attitudeBtns = attitudesDiv.getElementsByClassName("attitude")
+          var attitudeBtn = undefined
+          for (let index = 0; index < attitudeBtns.length; index++) {
+            const element = attitudeBtns[index];
+
+            let id = parseInt(element.dataset.id)
+
+            if (id == emojiId) {
+              attitudeBtn = element
+            }
+          }
+
+          if (undefined == attitudeBtn) {
+            attitudeBtn = document.createElement("button")
+            attitudeBtn.className = "attitude"
+            attitudeBtn.dataset.id = emojiId
+            attitudeBtn.dataset.count = 1
+            attitudeBtn.innerHTML = emojiMap.get(emojiId)
+
+            attitudesDiv.appendChild(attitudeBtn)
+          } else {
+            let count = parseInt(attitudeBtn.dataset.count) + 1
+            attitudeBtn.innerHTML = emojiMap.get(emojiId) + " +" + count
+            attitudeBtn.dataset.count = count
+          }
+
+          Snackbar.show({ text: "SUCCESS", });
+        } else {
+          Snackbar.show({ text: resp.erro, });
+        }
+      })
+    }
+
+    function onAttitudeAppend(element, postId) {
       postId = parseInt(postId)
       emojiId = parseInt(element.dataset.id)
       httpPost("{{.APIDomain}}/say", { "postId": postId, "emojiId": emojiId }, function (resp) {
         if (0 == resp.code) {
-          Snackbar.show({ text: "SUCCESS", });
           let count = parseInt(element.dataset.count) + 1
           element.innerHTML = emojiMap.get(emojiId) + " +" + count
           element.dataset.count = count
+
+          Snackbar.show({ text: "SUCCESS", });
         } else {
           Snackbar.show({ text: resp.erro, });
         }
