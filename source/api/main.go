@@ -929,7 +929,7 @@ func setPostAttitude(postID uint, attitudeID uint) error {
 
 	if nil != e {
 		attiudes = make(map[uint]int, 8)
-		attiudes[attitudeID] = 0
+		attiudes[attitudeID] = 1
 	} else {
 		attiudes[attitudeID]++
 	}
