@@ -26,18 +26,24 @@
   <div class="modal-close" onclick="onVote(3)"></div>
 </div>
 <script>
-  function onVote(status, remark="") {
-    var request = new XMLHttpRequest();
-    request.open("POST", "{{.VoteURL}}/{{.Vote.token}}");
-    request.send(JSON.stringify({ "status": status, "remark": remark }));
-    request.onload = function () {
-      console.log("vote " + request.status)
+  function onVote(status, remark = "") {
+    // var request = new XMLHttpRequest();
+    // request.open("POST", "{{.VoteURL}}/{{.Vote.token}}");
+    // request.send(JSON.stringify({ "status": status, "remark": remark }));
+    // request.onload = function () {
+    //   console.log("vote " + request.status)
 
+    //   var spaceModal = document.getElementById("space")
+    //   spaceModal.className = "modal"
+
+    //   Cookies.set("vt{{.Vote.token}}", "true")
+    // }
+    httpPost("{{.VoteURL}}/{{.Vote.token}}", { "status": status, "remark": remark }, function (resp) {
       var spaceModal = document.getElementById("space")
       spaceModal.className = "modal"
 
       Cookies.set("vt{{.Vote.token}}", "true")
-    }
+    })
   }
 
   function onNext(i) {

@@ -65,15 +65,16 @@
     }
 
     function initEmoji() {// &#xXXXXX;
-      var request = new XMLHttpRequest();
-      request.open("GET", "/static/emoji.json");
-      request.responseType = "json";
-      request.send();
-      request.onload = function () {
-        var emojis = request.response;
+      // var request = new XMLHttpRequest();
+      // request.open("GET", "/static/emoji.json");
+      // request.responseType = "json";
+      // request.send();
+      // request.onload = function () {
+      //   var emojis = request.response;
 
-        loadEmoji(emojis)
-      }
+      //   loadEmoji(emojis)
+      // }
+      httpGet("/static/emoji.json", loadEmoji)
     }
 
     function loadEmoji(emojis) {
