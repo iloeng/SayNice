@@ -41,31 +41,35 @@ function setTheme(theme) {
 
 initTheme()
 
-function httpGet(url, callback) {
+function httpGet(url, success, failure = undefined) {
   var request = new XMLHttpRequest();
   request.open("GET", url);
   request.responseType = "json";
   request.send();
   request.onload = function () {
-    if (200 != request.status) {
-      Snackbar.show({ text: "网络异常，请稍后再试。", });
-    } else {
-      callback(request.response)
-    }
+    httpOnLoad(request, success, failure)
   }
 }
 
-function httpPost(url, data, callback) {
+function httpPost(url, data, success, failure = undefined) {
   var request = new XMLHttpRequest();
   request.open("POST", url);
   request.responseType = "json";
   request.send(JSON.stringify(data));
   request.onload = function () {
-    if (200 != request.status) {
+    httpOnLoad(request, success, failure)
+  }
+}
+
+function httpOnLoad(request, success, failure) {
+  if (200 != request.status) {
+    if (undefined == failure) {
       Snackbar.show({ text: "网络异常，请稍后再试。", });
     } else {
-      callback(request.response)
+      failure(request.status, request.response)
     }
+  } else {
+    success(request.response)
   }
 }
 
@@ -76,9 +80,9 @@ function apiGet(url, success, failure = undefined) {
     } else if (undefined == failure) {
       Snackbar.show({ text: "请求失败: " + resp.erro, });
     } else {
-      failure(resp)
+      failure(200, resp)
     }
-  })
+  }, failure)
 }
 
 function apiPost(url, data, success, failure = undefined) {
@@ -88,9 +92,9 @@ function apiPost(url, data, success, failure = undefined) {
     } else if (undefined == failure) {
       Snackbar.show({ text: "提交失败: " + resp.erro, });
     } else {
-      failure(resp)
+      failure(200, resp)
     }
-  })
+  }, failure)
 }
 
 function autoLoad(callback) {

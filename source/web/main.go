@@ -104,6 +104,7 @@ func main() {
 	router := gin.Default()
 
 	router.GET("/", indexHTML)
+	router.GET("/posts/:offset", indexHTML)
 	router.GET("/new/post", newPostHTML)
 	router.GET("/post/:id", postHTML)
 
@@ -120,14 +121,16 @@ func indexHTML(c *gin.Context) {
 		APIDomain:        Domain,
 	}
 
+	offset := c.Param("offset")
+
 	var msg APIMessage
 
-	e := util.GetJSON(uri("/posts"), &msg)
+	e := util.GetJSON(uri("/posts?offset="+offset), &msg)
 
 	if nil != e {
 		c.JSON(http.StatusOK, e.Error())
 		return
-	} else if 0 != msg.Code && 10020 != msg.Code {
+	} else if 0 != msg.Code {
 		c.JSON(http.StatusOK, msg)
 		return
 	}

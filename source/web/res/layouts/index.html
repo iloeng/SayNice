@@ -5,28 +5,28 @@
 <body>
   {{template "fgm_toolbar" .}}
   <div id="content" class="content">
-    {{range $i, $post := $.Posts}}
-    <div style="padding:25px;">
-      <div id="t{{$post.id}}" class="text">{{$post.text}}<button onclick="onAll({{$post.id}})">全文</button></div>
-      <div style="display: flex; justify-content: end; padding: 10px 5px">
-        <span style="flex: 1">{{$post.createdAt}}</span>
-        <div style="flex: 1; text-align: end">
-          <button class="none" style="padding: 2px 15px;" onclick="onEmoji({{$post.id}})">😀</button>
-          <button class="none">{{$.ReportButtonText}}</button>
+    <div id="posts" class="posts">
+      {{range $i, $post := $.Posts}}
+      <div class="post">
+        <div id="t{{$post.id}}" class="text">{{$post.text}}<button onclick="onAll({{$post.id}})">全文</button></div>
+        <div class="bar">
+          <span>{{$post.createdAt}}</span>
+          <div>
+            <button class="text" onclick="onEmoji({{$post.id}})">😀</button>
+            <button class="none" onclick="onReport({{$post.id}})">{{$.ReportButtonText}}</button>
+          </div>
         </div>
+        <div id="a{{$post.id}}" class="attitudes">{{range $emojiId, $count := $post.attitudes}}
+          <button class="attitude" data-id="{{$emojiId}}" data-count="{{$count}}"
+            onclick='onAttitudeAppend(this, "{{$post.id}}", "{{$emojiId}}")'></button>
+          {{end}}</div>
+        <div id="f{{$post.id}}" class="emojis" hidden></div>
       </div>
-      <div id="a{{$post.id}}" class="attitudes">
-        {{range $emojiId, $count := $post.attitudes}}
-        <button class="attitude" data-id="{{$emojiId}}" data-count="{{$count}}"
-          onclick='onAttitudeAppend(this, "{{$post.id}}", "{{$emojiId}}")'></button>
-        {{end}}
-      </div>
-      <div id="f{{$post.id}}" class="emojis" hidden></div>
+      {{end}}
     </div>
-    {{end}}
-    <div style="display: flex; padding: 25px;">
-      <button id="nextPage" class="none" style="flex: 1;" onclick="onNextPage()">下一页</button>
-    </div>
+    <a href="/posts/{{len .Posts}}" style="display: flex; padding: 25px;">
+      <button id="nextPage" class="text" style="flex: 1;">下一页</button>
+    </a>
   </div>
   <button onclick="onWrite()" class="float" style="--shadow: 5;">
     <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -65,6 +65,10 @@
       feel.hidden = !feel.hidden
 
       currentPostId = postId
+    }
+
+    function onReport(postId) {
+
     }
 
     function onWrite() {
@@ -195,11 +199,97 @@
 
     function onNextPage() {
       apiGet("{{.APIDomain}}/posts?offset=" + postCount, function (resp) {
+        var postsDiv = document.getElementById("posts")
+        for (let index = 0; index < resp.data.length; index++) {
+          const post = resp.data[index];
 
-      }, function (resp) {
-        if (10020 == resp.code) { // 没有更多了
-          var nextPageBtn = document.getElementById("nextPage")
-          nextPageBtn.hidden = true
+          var postDiv = document.createElement("div")
+          postDiv.className = "post"
+
+          var postTextDiv = document.createElement("div")
+          var postTextAllBtn = document.createElement("button")
+
+          postTextDiv.id = "t" + post.id
+          postTextDiv.className = "text"
+          postTextDiv.innerHTML = post.text
+          postTextAllBtn.innerHTML = "全文"
+          postTextAllBtn.onclick = function () { onAll(post.id) }
+          postTextDiv.appendChild(postTextAllBtn)
+
+          postDiv.appendChild(postTextDiv)
+
+          var timeSpan = document.createElement("span")
+          timeSpan.innerHTML = post.createdAt
+
+          var toolDiv = document.createElement("div")
+          var emojiBtn = document.createElement("button")
+          var reportBtn = document.createElement("button")
+
+          emojiBtn.className = "text"
+          emojiBtn.innerHTML = "😀"
+          emojiBtn.onclick = function () { onEmoji(post.id) }
+          reportBtn.className = "none"
+          reportBtn.innerHTML = "{{$.ReportButtonText}}"
+          reportBtn.onclick = function () { onReport(post.id) }
+
+          toolDiv.appendChild(emojiBtn)
+          toolDiv.appendChild(reportBtn)
+
+          var barDiv = document.createElement("div")
+          barDiv.className = "bar"
+          barDiv.appendChild(timeSpan)
+          barDiv.appendChild(toolDiv)
+
+          postDiv.appendChild(barDiv)
+
+          var attitudesDiv = document.createElement("div")
+          attitudesDiv.id = "a" + post.id
+          attitudesDiv.className = "attitudes"
+
+          if (undefined != post.attitudes && null != post.attitudes) {
+
+            attitudes = Object.entries(post.attitudes)
+            attitudes.sort((a, b) => b[1] - a[1]);
+
+            for (let [emojiId, count] of attitudes) {
+              emojiId = parseInt(emojiId)
+
+              var attitudeDiv = document.createElement("button")
+              attitudeDiv.className = "attitude"
+              attitudeDiv.dataset.id = emojiId
+              attitudeDiv.dataset.count = count
+              attitudeDiv.onclick = function () { onAttitudeAppend(attitudeDiv, post.id, emojiId) }
+              if (1 == count) {
+                attitudeDiv.innerHTML = emojiMap.get(emojiId)
+              } else {
+                attitudeDiv.innerHTML = emojiMap.get(emojiId) + "+" + count
+              }
+
+              attitudesDiv.appendChild(attitudeDiv)
+            }
+          }
+
+          postDiv.appendChild(attitudesDiv)
+
+          var emojisDiv = document.createElement("div")
+          emojisDiv.id = "f" + post.id
+          emojisDiv.className = "emojis"
+
+          postDiv.appendChild(emojisDiv)
+
+          postsDiv.appendChild(postDiv)
+        }
+
+        var nextPageBtn = document.getElementById("nextPage")
+        nextPageBtn.hidden = true
+      }, function (status, resp) {
+        if (200 != status) {
+          Snackbar.show({ text: "网络异常，请稍后再试", });
+        } else if (10020 == resp.code) { // 没有更多了
+          // var nextPageBtn = document.getElementById("nextPage")
+          // nextPageBtn.hidden = true
+
+          window.onscroll = undefined
         } else {
           Snackbar.show({ text: "请求失败: " + resp.erro, });
         }
