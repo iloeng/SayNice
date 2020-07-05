@@ -670,7 +670,7 @@ func getRASpace(c *gin.Context) (int, string, interface{}) {
 		}
 
 		articles := []string{
-			"是否为毫无意义的内容？",
+			"是否为脸滚键盘出来的人类无法阅读的内容？",
 			"是否含有政治、军事或战争内容？",
 			"是否含有性和毒品交易内容？",
 			"是否含有赌博、暴力或血腥内容？",
