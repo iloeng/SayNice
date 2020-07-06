@@ -37,7 +37,7 @@ SayNice 匿名情感倾诉社区。
 需要在 GitHub 项目设置页 Settings 的 Secrets 选项页中设置 4 个变量：
 
 变量名 | 含义
-====== | =====
+------ | -------
 DEPLOY_KEY | 服务器私钥
 SSH_HOST | ssh Host
 SSH_PORT | ssh port
@@ -45,4 +45,4 @@ SSH_USERNAME | ssh username
 
 ------------------
 
-采用 MIT 开源协议。
+项目代码及所有资源，采用 MIT 开源协议。
