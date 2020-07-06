@@ -198,107 +198,31 @@
     }
 
     function onNextPage() {
-      apiGet("{{.APIDomain}}/posts?offset=" + postCount, function (resp) {
-        var postsDiv = document.getElementById("posts")
-        for (let index = 0; index < resp.data.length; index++) {
-          const post = resp.data[index];
+      window.onscroll = undefined
 
-          var postDiv = document.createElement("div")
-          postDiv.className = "post"
+      onNextPosts("{{.APIDomain}}/posts?offset=" + postCount, "posts", "{{$.ReportButtonText}}",
+        onAll, onEmoji, onReport, onAttitudeAppend,
+        function () {
+          var nextPageBtn = document.getElementById("nextPage")
+          nextPageBtn.hidden = false
 
-          var postTextDiv = document.createElement("div")
-          var postTextAllBtn = document.createElement("button")
-
-          postTextDiv.id = "t" + post.id
-          postTextDiv.className = "text"
-          postTextDiv.innerHTML = post.text
-          postTextAllBtn.innerHTML = "全文"
-          postTextAllBtn.onclick = function () { onAll(post.id) }
-          postTextDiv.appendChild(postTextAllBtn)
-
-          postDiv.appendChild(postTextDiv)
-
-          var timeSpan = document.createElement("span")
-          timeSpan.innerHTML = post.createdAt
-
-          var toolDiv = document.createElement("div")
-          var emojiBtn = document.createElement("button")
-          var reportBtn = document.createElement("button")
-
-          emojiBtn.className = "text"
-          emojiBtn.innerHTML = "😀"
-          emojiBtn.onclick = function () { onEmoji(post.id) }
-          reportBtn.className = "none"
-          reportBtn.innerHTML = "{{$.ReportButtonText}}"
-          reportBtn.onclick = function () { onReport(post.id) }
-
-          toolDiv.appendChild(emojiBtn)
-          toolDiv.appendChild(reportBtn)
-
-          var barDiv = document.createElement("div")
-          barDiv.className = "bar"
-          barDiv.appendChild(timeSpan)
-          barDiv.appendChild(toolDiv)
-
-          postDiv.appendChild(barDiv)
-
-          var attitudesDiv = document.createElement("div")
-          attitudesDiv.id = "a" + post.id
-          attitudesDiv.className = "attitudes"
-
-          if (undefined != post.attitudes && null != post.attitudes) {
-
-            attitudes = Object.entries(post.attitudes)
-            attitudes.sort((a, b) => b[1] - a[1]);
-
-            for (let [emojiId, count] of attitudes) {
-              emojiId = parseInt(emojiId)
-
-              var attitudeDiv = document.createElement("button")
-              attitudeDiv.className = "attitude"
-              attitudeDiv.dataset.id = emojiId
-              attitudeDiv.dataset.count = count
-              attitudeDiv.onclick = function () { onAttitudeAppend(attitudeDiv, post.id, emojiId) }
-              if (1 == count) {
-                attitudeDiv.innerHTML = emojiMap.get(emojiId)
-              } else {
-                attitudeDiv.innerHTML = emojiMap.get(emojiId) + "+" + count
-              }
-
-              attitudesDiv.appendChild(attitudeDiv)
-            }
+          window.onscroll = function () {
+            autoLoad(100, onNextPage)
           }
-
-          postDiv.appendChild(attitudesDiv)
-
-          var emojisDiv = document.createElement("div")
-          emojisDiv.id = "f" + post.id
-          emojisDiv.className = "emojis"
-
-          postDiv.appendChild(emojisDiv)
-
-          postsDiv.appendChild(postDiv)
-        }
-
-        var nextPageBtn = document.getElementById("nextPage")
-        nextPageBtn.hidden = true
-      }, function (status, resp) {
-        if (200 != status) {
-          Snackbar.show({ text: "网络异常，请稍后再试", });
-        } else if (10020 == resp.code) { // 没有更多了
+        },
+        function () {
           var nextPageBtn = document.getElementById("nextPage")
           nextPageBtn.hidden = true
 
           window.onscroll = undefined
-        } else {
-          Snackbar.show({ text: "请求失败: " + resp.erro, });
-        }
-      })
+        })
     }
 
     httpGet("/static/emoji.json", loadEmoji)
 
-    window.onscroll = onNextPage()
+    window.onscroll = function () {
+      autoLoad(100, onNextPage)
+    }
   </script>
 </body>
 
