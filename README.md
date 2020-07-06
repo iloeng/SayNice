@@ -1,5 +1,7 @@
 SayNice 匿名情感倾诉社区。
 
+> 线上地址：<https://saynice.whoam.xyz/>
+
 我们需要倾诉，需要发泄，需要有人关注，需要有人关怀，需要有人认同，需要有人支持，需要有人理解，需要有人陪伴。    
 我们需要真实，我们也需要距离； 我们需要安全，我们也需要放肆。    
 我们需要我们存在于这个世间，我们也需要我们不被人打扰。    
@@ -31,6 +33,15 @@ SayNice 匿名情感倾诉社区。
 ### GitHub Actions
 
 本项目使用了 GitHub Actions 实现项目部署自动化。
+
+需要在 GitHub 项目设置页 Settings 的 Secrets 选项页中设置 4 个变量：
+
+变量名 | 含义
+====== | =====
+DEPLOY_KEY | 服务器私钥
+SSH_HOST | ssh Host
+SSH_PORT | ssh port
+SSH_USERNAME | ssh username
 
 ------------------
 
