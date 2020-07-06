@@ -286,8 +286,8 @@
         if (200 != status) {
           Snackbar.show({ text: "网络异常，请稍后再试", });
         } else if (10020 == resp.code) { // 没有更多了
-          // var nextPageBtn = document.getElementById("nextPage")
-          // nextPageBtn.hidden = true
+          var nextPageBtn = document.getElementById("nextPage")
+          nextPageBtn.hidden = true
 
           window.onscroll = undefined
         } else {
