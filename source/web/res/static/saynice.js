@@ -141,10 +141,8 @@ function report(url, title, articles, a, b) {
     }
 
     apiPost(url, { "remark": remark }, function (resp) {
-      document.body.removeChild(reportModal)
       Snackbar.show({ text: "SUCCESS", });
     }, function (status, resp) {
-      document.body.removeChild(reportModal)
       if (200 != status) {
         Snackbar.show({ text: "网络异常，请稍后再试。", });
       } else {
