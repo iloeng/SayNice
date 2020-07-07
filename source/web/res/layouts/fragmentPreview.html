@@ -3,17 +3,12 @@
   <div class="modal-background" onclick="onPreview()"></div>
   <div class="modal-content">
     <div style="margin: 0.2em; background-color: var(--background-body); --p:30px; --shadow:5; --br:30px">
-      <p id="previewContent" style="min-height: 80px;"></p>
-    </div>
-    <div style="display: flex; --px: 10px">
-      <div style="flex: 1; align-self: center;">
-        <input type="checkbox" id="sign" onchange="onSign(this)">
-        <label for="sign" style="color: #fff;">
-          {{.CommunityComplianceCheckBoxText}}
-        </label>
-        <a style="color: #fff;" href="compliance.html">>></a>
+      <h4>预览</h4>
+      <p id="previewContent" class="preview"></p>
+      <hr style="margin: 20px 0;">
+      <h6>请检查主题内容中是否含有以下项。</h6>
+      <div id="articles" class="horizontal-scroll-wrapper">
       </div>
-      <button disabled id="submit" onclick="onSubmit()">{{.SubmitButtonText}}</button>
     </div>
   </div>
   <div class="modal-close" onclick="onPreview()"></div>
@@ -24,12 +19,40 @@
   function onPreview() {
     var previewDiv = document.getElementById("preview")
     if (previewDiv.className == "modal") {
-      var postTextareaDiv = document.getElementById("postTextarea")
-      var previewContentDiv = document.getElementById("previewContent")
-      previewContentDiv.innerHTML = postTextareaDiv.value
-      previewDiv.className = "modal is-active"
+      initArticles("{{.APIDomain}}/articles", function (articles) {
+        var articlesDiv = document.getElementById("articles")
+
+        for (let index = 0; index < articles.length; index++) {
+          appendArticle(articlesDiv, articles[index], "是", "否", function () {
+            Snackbar.show({ text: "你好，请修改相关违约内容后再发布，谢谢。", });
+            onPreview()
+          }, function () {
+            onNext(index)
+          })
+        }
+
+        appendArticle(articlesDiv, "检测结束，请问是否确定发布该主题？", "再写会儿", "发布", function () {
+          onPreview()
+        }, function () {
+          onSubmit()
+        })
+
+        var postTextareaDiv = document.getElementById("postTextarea")
+        var previewContentDiv = document.getElementById("previewContent")
+        previewContentDiv.innerHTML = postTextareaDiv.value
+        previewDiv.className = "modal is-active"
+      })
     } else {
       previewDiv.className = "modal"
+    }
+  }
+
+  function onNext(i) {
+    var articlesDiv = document.getElementById("articles").getElementsByTagName("div")
+    for (let index = 0; index < articlesDiv.length; index++) {
+      const element = articlesDiv[index];
+      element.style.transform = 'translateX(-' + (i + 1) * 100 + '%)';
+      element.style.transition = "0.2s"
     }
   }
 
@@ -37,11 +60,6 @@
     apiGet("{{.APIDomain}}/new/post", function (resp) {
       postID = resp.data;
     })
-  }
-
-  function onSign(checkbox) {
-    var submitButton = document.getElementById("submit")
-    submitButton.disabled = !checkbox.checked
   }
 
   function onSubmit() {

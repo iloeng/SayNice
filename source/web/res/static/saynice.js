@@ -15,16 +15,6 @@ var themes = [
   "accent black",
 ]
 
-function initTheme() {
-  var theme = Cookies.get("theme")
-
-  if (theme) {
-    setTheme(theme)
-  } else {
-    randTheme()
-  }
-}
-
 function randTheme() {
   var i = Math.random() * 10000 % themes.length
   var x = themes[Math.floor(i)]
@@ -39,7 +29,72 @@ function setTheme(theme) {
   Cookies.set("theme", theme)
 }
 
-initTheme()
+function alert(message, a, b, aCallback, bCallback) {
+  var modal = document.createElement("div")
+  modal.className = "modal is-active"
+
+  var bg = document.createElement("div")
+  bg.className = "modal-background"
+  modal.appendChild(bg)
+
+  var content = document.createElement("div")
+  content.className = "modal-content"
+
+  var dialog = document.createElement("div")
+  dialog.className = "dialog"
+
+  var title = document.createElement("h4")
+  title.innerHTML = message
+
+  var yesButton = document.createElement("button")
+  yesButton.innerText = a
+  yesButton.onclick = function () {
+    document.body.removeChild(modal)
+    if (undefined != aCallback) {
+      aCallback()
+    }
+  }
+
+  var noButton = document.createElement("button")
+  noButton.innerText = b
+  noButton.onclick = function () {
+    document.body.removeChild(modal)
+    if (undefined != bCallback) {
+      bCallback()
+    }
+  }
+
+  dialog.appendChild(title)
+  dialog.appendChild(yesButton)
+  dialog.appendChild(noButton)
+
+  content.appendChild(dialog)
+
+  modal.appendChild(content)
+  document.body.appendChild(modal)
+}
+
+function appendArticle(parent, article, yes, no, yesCallback, noCallback) {
+  var articleDiv = document.createElement("div")
+  articleDiv.className = "article"
+
+  var articleText = document.createElement("p")
+  articleText.innerHTML = article
+
+  var yesButton = document.createElement("button")
+  yesButton.innerText = yes
+  yesButton.onclick = yesCallback
+
+  var noButton = document.createElement("button")
+  noButton.innerText = no
+  noButton.onclick = noCallback
+
+  articleDiv.appendChild(articleText)
+  articleDiv.appendChild(yesButton)
+  articleDiv.appendChild(noButton)
+
+  parent.appendChild(articleDiv)
+}
 
 function httpGet(url, success, failure = undefined) {
   var request = new XMLHttpRequest();
@@ -214,3 +269,27 @@ function onNextPosts(
     }
   })
 }
+
+function initTheme() {
+  var theme = Cookies.get("theme")
+
+  if (theme) {
+    setTheme(theme)
+  } else {
+    randTheme()
+  }
+}
+
+function initArticles(url, callback) {
+  var articles = Cookies.get("articles")
+  if (undefined != articles && null != articles && 0 != articles.length) {
+    callback(JSON.parse(articles))
+  } else {
+    apiGet(url, function (resp) {
+      Cookies.set("articles", JSON.stringify(resp.data))
+      callback(resp.data)
+    })
+  }
+}
+
+initTheme()

@@ -99,8 +99,6 @@ func main() {
 
 	initTmpl(tmpl)
 
-	staticBox := packr.NewBox("./res/static")
-
 	router := gin.Default()
 
 	router.GET("/", indexHTML)
@@ -109,7 +107,7 @@ func main() {
 	router.GET("/post/:id", postHTML)
 
 	router.SetHTMLTemplate(tmpl)
-	router.StaticFS("/static", staticBox)
+	router.StaticFS("/static", packr.NewBox("./res/static"))
 	router.Run(":19548")
 }
 

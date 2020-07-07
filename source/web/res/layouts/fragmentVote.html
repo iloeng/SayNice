@@ -2,7 +2,7 @@
 <div id="space" class="modal">
   <div class="modal-background"></div>
   <div class="modal-content">
-    <div style="margin: 0.2em; background-color: var(--background-body); --p:30px; --shadow:5; --br:30px">
+    <div class="dialog" style="--shadow:5;">
       <h4>发现一个新主题</h4>
       <p class="preview">{{.Vote.raSpace.post.text}}</p>
       <hr style="margin: 20px 0;">
@@ -27,11 +27,26 @@
 </div>
 <script>
   function onVote(status, remark = "") {
+    if (3 == status) {
+      alert("进入随机匿名空间的用户，你好，审查是你在社区的权限，也是你的责任和义务，请问是否确认本次弃权？",
+        "继续审查", "确认弃权",
+        undefined,
+        function () {
+          vote(status, remark)
+        }
+      )
+    } else {
+      vote(status, remark)
+    }
+  }
+
+  function vote(status, remark) {
     apiPost("{{.VoteURL}}/{{.Vote.token}}", { "status": status, "remark": remark }, function (resp) {
       var spaceModal = document.getElementById("space")
       spaceModal.className = "modal"
 
       Cookies.set("vt{{.Vote.token}}", "true")
+      Snackbar.show({ text: "感谢你的参与和支持，谢谢。", });
     })
   }
 
