@@ -21,6 +21,7 @@
     if (previewDiv.className == "modal") {
       initArticles("{{.APIDomain}}/articles", function (articles) {
         var articlesDiv = document.getElementById("articles")
+        articlesDiv.innerHTML = ""
 
         for (let index = 0; index < articles.length; index++) {
           appendArticle(articlesDiv, articles[index], "是", "否", function () {

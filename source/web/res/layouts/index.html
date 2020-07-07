@@ -24,7 +24,7 @@
       </div>
       {{end}}
     </div>
-    <a href="/posts/{{len .Posts}}" style="display: flex; padding: 25px;">
+    <a href="/posts/{{len .Posts}}" style="display: flex; margin: 25px 0;">
       <button id="nextPage" class="text" style="flex: 1;">下一页</button>
     </a>
   </div>
@@ -37,7 +37,7 @@
 
   {{template "fgm_footer" .}}
 
-  <!-- 以为是可滚动部分 -->
+  <!-- 以上是可滚动部分 -->
 
   {{if .HasVote}}
   {{template "fgm_vote" .VoteData}}
@@ -71,7 +71,9 @@
     }
 
     function onReport(postId) {
-
+      initArticles("{{.APIDomain}}/articles", function (articles) {
+        report("{{.APIDomain}}/report/" + postId, "举报", articles, "取消", "提交")
+      })
     }
 
     function onWrite() {
@@ -205,7 +207,9 @@
 
       onNextPosts("{{.APIDomain}}/posts?offset=" + postCount, "posts", "{{$.ReportButtonText}}",
         onAll, onEmoji, onReport, onAttitudeAppend,
-        function () {
+        function (count) {
+          postCount += count
+
           var nextPageBtn = document.getElementById("nextPage")
           nextPageBtn.hidden = false
 

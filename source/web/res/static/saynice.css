@@ -2,6 +2,7 @@
 
 :root {
   --theme: var(--primary);
+  font-family: "Roboto", sans-serif, "inherit", "Helvetica Neue", "Luxi Sans", "DejaVu Sans", Tahoma, "Hiragino Sans GB", "Microsoft Yahei";
 }
 
 @media (max-width: 640px) {

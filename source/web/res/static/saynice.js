@@ -76,6 +76,103 @@ function alert(message, a, b, aCallback, bCallback) {
   document.body.appendChild(modal)
 }
 
+var reportModal = undefined
+
+function report(url, title, articles, a, b) {
+  var reportModal = document.createElement("div")
+  reportModal.className = "modal is-active"
+
+  var bg = document.createElement("div")
+  bg.className = "modal-background"
+
+  var content = document.createElement("div")
+  content.className = "modal-content"
+
+  var dialog = document.createElement("div")
+  dialog.className = "dialog"
+  dialog.style = "text-align: center;"
+
+  var t = document.createElement("h4")
+  t.innerHTML = title
+
+  var checked = []
+  var checkboxs = document.createElement("div")
+  checkboxs.style = "text-align: start"
+
+  for (let index = 0; index < articles.length; index++) {
+    const article = articles[index];
+    checked[index] = false
+
+    var p = document.createElement("p")
+    var checkbox = document.createElement("input")
+    checkbox.type = "checkbox"
+    checkbox.name = "article" + index
+    checkbox.id = "article" + index
+    checkbox.onclick = function () {
+      var cb = document.getElementById("article" + index)
+      checked[index] = cb.checked
+    }
+    var label = document.createElement("label")
+    label.style = "margin-left: 10px;"
+    label.htmlFor = checkbox.id
+    label.innerText = article
+    p.appendChild(checkbox)
+    p.appendChild(label)
+    checkboxs.appendChild(p)
+  }
+
+  var yesButton = document.createElement("button")
+  yesButton.innerText = a
+  yesButton.className = "text"
+  yesButton.onclick = function () {
+    document.body.removeChild(reportModal)
+  }
+
+  var noButton = document.createElement("button")
+  noButton.innerText = b
+  noButton.onclick = function () {
+    document.body.removeChild(reportModal)
+
+    var remark = ""
+    for (let index = 0; index < checked.length; index++) {
+      if (checked[index]) {
+        remark += articles[index] + ";"
+      }
+    }
+
+    apiPost(url, { "remark": remark }, function (resp) {
+      document.body.removeChild(reportModal)
+      Snackbar.show({ text: "SUCCESS", });
+    }, function (status, resp) {
+      document.body.removeChild(reportModal)
+      if (200 != status) {
+        Snackbar.show({ text: "网络异常，请稍后再试。", });
+      } else {
+        Snackbar.show({ text: "提交失败：" + resp.erro, });
+      }
+    })
+  }
+
+  dialog.appendChild(t)
+  dialog.appendChild(checkboxs)
+  dialog.appendChild(yesButton)
+  dialog.appendChild(noButton)
+
+  content.appendChild(dialog)
+
+  var close = document.createElement("close")
+  close.className = "modal-close"
+  close.onclick = function () {
+    document.body.removeChild(reportModal)
+  }
+
+  reportModal.appendChild(bg)
+  reportModal.appendChild(content)
+  reportModal.appendChild(close)
+
+  document.body.appendChild(reportModal)
+}
+
 function appendArticle(parent, article, yes, no, yesCallback, noCallback) {
   var articleDiv = document.createElement("div")
   articleDiv.className = "article"
@@ -260,7 +357,7 @@ function onNextPosts(
       postsDiv.appendChild(postDiv)
     }
 
-    completedCallback()
+    completedCallback(resp.data.length)
   }, function (status, resp) {
     if (200 != status) {
       Snackbar.show({ text: "网络异常，请稍后再试", });
@@ -283,15 +380,19 @@ function initTheme() {
 }
 
 function initArticles(url, callback) {
-  var articles = Cookies.get("articles")
-  if (undefined != articles && null != articles && 0 != articles.length) {
-    callback(JSON.parse(articles))
-  } else {
-    apiGet(url, function (resp) {
-      Cookies.set("articles", JSON.stringify(resp.data))
-      callback(resp.data)
-    })
-  }
+  // var articles = Cookies.get("articles")
+  // if (undefined != articles && null != articles && 0 != articles.length) {
+  //   callback(JSON.parse(articles))
+  // } else {
+  //   apiGet(url, function (resp) {
+  //     Cookies.set("articles", JSON.stringify(resp.data))
+  //     callback(resp.data)
+  //   })
+  // }
+  apiGet(url, function (resp) {
+    Cookies.set("articles", JSON.stringify(resp.data))
+    callback(resp.data)
+  })
 }
 
 initTheme()
