@@ -171,6 +171,13 @@ type Post struct {
 	CreatedAt *JSONTime     `json:"createdAt,omitempty"`
 }
 
+// Article 协议
+// type Article struct {
+// 	ID    uint   ``
+// 	Title string ``
+// 	Text  string ``
+// }
+
 // RASpace 随机匿名空间
 // Title comment:'空间标题';
 // Post comment:'随机匿名空间审查的主题';
@@ -347,6 +354,7 @@ func main() {
 	v1.GET("/emoji", output(listEmoji))
 
 	v1.GET("/post/:id", output(getPost))
+	v1.GET("/articles", output(getArticles))
 
 	v1.GET("/new/post", output(newPost))
 	v1.POST("/post/:id", output(submitPost))
@@ -466,6 +474,21 @@ func listEmoji(c *gin.Context) (int, string, interface{}) {
 	}
 
 	return CodeSuccess, "", emojiList
+}
+
+func getArticles(c *gin.Context) (int, string, interface{}) {
+	articles := []string{
+		"是否为脸滚键盘出来的人类无法阅读的内容？",
+		"是否含有政治、军事或战争内容？",
+		"是否含有性和毒品交易内容？",
+		"是否含有赌博、暴力或血腥内容？",
+		"是否含有未经证实的新闻？",
+		"是否含有地区、种族以及性别歧视的言论？",
+		"是否含有令人反感的广告或不文明用语？",
+		"是否出现了代表主体的人名、公司、组织或邮箱、手机号、微信号、Fackbook号等联系方式？",
+	}
+
+	return 0, "", articles
 }
 
 // 获取指定的主题内容
