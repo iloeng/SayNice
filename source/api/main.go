@@ -189,7 +189,6 @@ type RASpace struct {
 	Post          *Post     `json:"post,omitempty" gorm:"foreignkey:PostID;"`
 	PostID        uint      `json:"postId"`
 	Votes         []Vote    `json:"votes,omitempty"`
-	Articles      []string  `json:"articles,omitempty" gorm:"-"`
 	MaxVotedCount int       `json:"-" gorm:"type:integer;default:0;not null;"`
 	Status        int       `json:"status" gorm:"type:integer;default:0;not null;"`
 	CreatedAt     *JSONTime `json:"createdAt,omitempty"`
@@ -485,7 +484,8 @@ func getArticles(c *gin.Context) (int, string, interface{}) {
 		"是否含有未经证实的新闻？",
 		"是否含有地区、种族以及性别歧视的言论？",
 		"是否含有令人反感的广告或不文明用语？",
-		"是否出现了代表主体的人名、公司、组织或邮箱、手机号、微信号、Fackbook号等联系方式？",
+		"是否出现了代表个体或群体的人名、公司、组织等主体名称？",
+		"是否出现了具体的地址、邮箱、手机号、微信号、Fackbook号等联系方式？",
 	}
 
 	return 0, "", articles
@@ -692,19 +692,6 @@ func getRASpace(c *gin.Context) (int, string, interface{}) {
 			token = uuid.New().String()
 		}
 
-		articles := []string{
-			"是否为脸滚键盘出来的人类无法阅读的内容？",
-			"是否含有政治、军事或战争内容？",
-			"是否含有性和毒品交易内容？",
-			"是否含有赌博、暴力或血腥内容？",
-			"是否含有未经证实的新闻？",
-			"是否含有地区、种族以及性别歧视的言论？",
-			"是否含有令人反感的广告或不文明用语？",
-			"是否出现了具体的人名、地址、邮箱、手机号、微信号、Fackbook号等联系方式？",
-		}
-
-		space.Articles = articles
-
 		vote := Vote{
 			RASpace: &space,
 			Token:   token,
@@ -903,17 +890,25 @@ func reportPost(c *gin.Context) (int, string, interface{}) {
 	postID, e := strconv.ParseUint(c.Param("id"), 10, 64)
 
 	if postID <= 0 || nil != e {
-		return 80001, "Parameter ID type error", nil
+		return 80010, "Parameter ID type error", nil
+	}
+
+	var data Vote
+
+	e = c.ShouldBindJSON(&data)
+
+	if nil != e {
+		return 80020, e.Error(), nil
 	}
 
 	remark := c.PostForm("remark")
 
-	updateMap := map[string]interface{}{"status": 3, "remark": remark}
+	updateMap := map[string]interface{}{"status": 3, "remark": data.Remark}
 
 	e = db.Model(&Post{}).Where("id=?", postID).Update(updateMap).Error
 
 	if nil != e {
-		return 80002, e.Error(), nil
+		return 80030, e.Error(), nil
 	}
 
 	go openRASpace(uint(postID), "有人举报了该主题，请检查举报是否属实，谢谢。")
