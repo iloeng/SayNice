@@ -432,7 +432,7 @@ func listPost(c *gin.Context) (int, string, interface{}) {
 
 	var postList []*Post
 
-	tx := db.Where("status=?", StatusAllowed).Limit(limit).Offset(offset)
+	tx := db.Where("status IN (?)", []int{StatusAllowed, StatusReported}).Limit(limit).Offset(offset)
 
 	if 0 == order {
 		e = tx.Order("created_at DESC").Find(&postList).Error
@@ -903,7 +903,7 @@ func reportPost(c *gin.Context) (int, string, interface{}) {
 		return 80021, "no remark", nil
 	}
 
-	updateMap := map[string]interface{}{"status": 3, "remark": data.Remark}
+	updateMap := map[string]interface{}{"status": StatusReported, "remark": data.Remark}
 
 	e = db.Model(&Post{}).Where("id=?", postID).Update(updateMap).Error
 
