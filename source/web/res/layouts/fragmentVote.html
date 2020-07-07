@@ -8,32 +8,39 @@
       <hr style="margin: 20px 0;">
       <h6>{{.Vote.raSpace.subject}}</h6>
       <div id="articles" class="horizontal-scroll-wrapper">
-        {{range $i, $article := $.Vote.raSpace.articles}}
-        <div id="article{{$i}}">
-          <p style="font-size: 20px;">{{$article}}</p>
-          <button onclick="onVote(2, {{$article}})">是</button>
-          <button onclick="onNext({{$i}})">否</button>
-        </div>
-        {{end}}
-        <div>
-          <p style="font-size: 20px;">检测结束，请问是否允许发布该主题？</p>
-          <button onclick="onVote(2)">拒绝</button>
-          <button onclick="onVote(1)">允许</button>
-        </div>
       </div>
     </div>
   </div>
   <div class="modal-close" onclick="onVote(3)"></div>
 </div>
 <script>
+  initArticles("{{.ArticlesURL}}", function (articles) {
+    var articlesDiv = document.getElementById("articles")
+
+    for (let index = 0; index < articles.length; index++) {
+      appendArticle(articlesDiv, articles[index], "是", "否", function () {
+        Snackbar.show({ text: "你好，请修改相关违约内容后再发布，谢谢。", });
+        onVote(2)
+      }, function () {
+        onNext(index)
+      })
+    }
+
+    appendArticle(articlesDiv, "检查结束，请问是否允许发布该主题？", "拒绝", "允许", function () {
+      onVote(2)
+    }, function () {
+      onVote(1)
+    })
+  })
+
   function onVote(status, remark = "") {
     if (3 == status) {
-      alert("进入随机匿名空间的用户，你好，审查是你在社区的权限，也是你的责任和义务，请问是否确认本次弃权？",
-        "继续审查", "确认弃权",
-        undefined,
+      alert("请问是否确认放弃本次表决？",
+        "确认放弃", "继续表决",
         function () {
           vote(status, remark)
-        }
+        },
+        undefined
       )
     } else {
       vote(status, remark)
@@ -46,7 +53,7 @@
       spaceModal.className = "modal"
 
       Cookies.set("vt{{.Vote.token}}", "true")
-      Snackbar.show({ text: "感谢你的参与和支持，谢谢。", });
+      Snackbar.show({ text: "感谢你的支持和参与，谢谢。", });
     })
   }
 

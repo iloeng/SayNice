@@ -42,12 +42,14 @@ function alert(message, a, b, aCallback, bCallback) {
 
   var dialog = document.createElement("div")
   dialog.className = "dialog"
+  dialog.style = "text-align: center;"
 
-  var title = document.createElement("h4")
+  var title = document.createElement("h5")
   title.innerHTML = message
 
   var yesButton = document.createElement("button")
   yesButton.innerText = a
+  yesButton.className = "text"
   yesButton.onclick = function () {
     document.body.removeChild(modal)
     if (undefined != aCallback) {

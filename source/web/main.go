@@ -28,13 +28,13 @@ type NewPostData struct {
 	CommunityComplianceCheckBoxText string
 	APIDomain                       string
 	SubmitButtonText                string
-	VoteData                        VoteData
 }
 
 // VoteData 随机匿名空间表决数据对象
 type VoteData struct {
-	Vote    interface{}
-	VoteURL string
+	Vote        interface{}
+	VoteURL     string
+	ArticlesURL string
 }
 
 // IndexData index.html 页面片段
@@ -140,8 +140,9 @@ func indexHTML(c *gin.Context) {
 	if nil == e && 0 == msg.Code {
 		data.HasVote = true
 		data.VoteData = VoteData{
-			Vote:    msg.Data,
-			VoteURL: uri("/vote"),
+			Vote:        msg.Data,
+			VoteURL:     uri("/vote"),
+			ArticlesURL: uri("/articles"),
 		}
 	}
 
