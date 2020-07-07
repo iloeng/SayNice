@@ -899,9 +899,9 @@ func reportPost(c *gin.Context) (int, string, interface{}) {
 
 	if nil != e {
 		return 80020, e.Error(), nil
+	} else if "" == data.Remark {
+		return 80021, "no remark", nil
 	}
-
-	remark := c.PostForm("remark")
 
 	updateMap := map[string]interface{}{"status": 3, "remark": data.Remark}
 
