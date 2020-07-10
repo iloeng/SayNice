@@ -76,14 +76,15 @@ function alert(message, a, b, aCallback, bCallback) {
   document.body.appendChild(modal)
 }
 
-var reportModal = undefined
-
 function report(url, title, articles, a, b) {
   var reportModal = document.createElement("div")
   reportModal.className = "modal is-active"
 
   var bg = document.createElement("div")
   bg.className = "modal-background"
+  bg.onclick = function () {
+    document.body.removeChild(reportModal)
+  }
 
   var content = document.createElement("div")
   content.className = "modal-content"
@@ -249,6 +250,65 @@ function apiPost(url, data, success, failure = undefined) {
   }, failure)
 }
 
+// see: https://blog.csdn.net/qq_33401924/article/details/88898811
+let Time = {
+  //    获取当前时间戳
+  getUnix: function () {
+    let date = new Date()
+    return date.getTime()
+  },
+  //    获取今天0点0分0秒的时间戳
+  getTodayUnix: function () {
+    let date = new Date()
+    date.setHours(0)
+    date.setMinutes(0)
+    date.setSeconds(0)
+    date.setMilliseconds(0)
+    return date.getTime()
+  },
+  //    获取今年1月1日0点0分0秒的时间戳
+  getYearUnix: function () {
+    let date = new Date()
+    date.setMonth(0)
+    date.setDate(1)
+    date.setHours(0)
+    date.setMinutes(0)
+    date.setSeconds(0)
+    date.setMilliseconds(0)
+    return date.getTime()
+  },
+  //    获取标准年月
+  getLastDate: function (time) {
+    let date = new Date(time)
+    let month = date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1
+    let day = date.getDate() + 1 < 10 ? '0' + (date.getDate() + 1) : date.getDate() + 1
+    return date.getFullYear() + '-' + month + '-' + day
+  },
+  //    转换时间
+  getFormatTime: function (timestamp) {
+    let now = this.getUnix()
+    let today = this.getTodayUnix()
+    let year = this.getYearUnix()
+    let timer = (now - timestamp) / 1000
+    let tip = ''
+
+    if (timer <= 0) {
+      tip = '刚刚'
+    } else if (Math.floor(timer / 60) <= 0) {
+      tip = '刚刚'
+    } else if (Math.floor(timer < 3600)) {
+      tip = Math.floor(timer / 60) + '分钟前'
+    } else if (timer >= 3600 && timer < 86400) {
+      tip = Math.floor(timer / 3600) + '小时前'
+    } else if (timer / 86400 <= 31) {
+      tip = Math.floor(timer / 86400) + '天前'
+    } else {
+      tip = this.getLastDate(timestamp)
+    }
+    return tip
+  }
+}
+
 function autoLoad(offset, callback) {
   //文档内容实际高度（包括超出视窗的溢出部分）
   var scrollHeight = Math.max(document.documentElement.scrollHeight, document.body.scrollHeight);
@@ -294,7 +354,8 @@ function onNextPosts(
       postDiv.appendChild(postTextDiv)
 
       var timeSpan = document.createElement("span")
-      timeSpan.innerHTML = post.createdAt
+      var createdAt = new Date(post.createdAt.replace(/-/gi, "/")).getTime()
+      timeSpan.innerHTML = Time.getFormatTime(createdAt)
 
       var toolDiv = document.createElement("div")
       var emojiBtn = document.createElement("button")
@@ -367,6 +428,16 @@ function onNextPosts(
   })
 }
 
+function initCreatedAt() {
+  var createAtDiv = document.getElementsByClassName("createdAt")
+  for (let index = 0; index < createAtDiv.length; index++) {
+    const element = createAtDiv[index];
+    let createdAt = new Date(element.dataset.time.replace(/-/gi, "/")).getTime()
+    element.innerHTML = Time.getFormatTime(createdAt)
+    // element.className = ""
+  }
+}
+
 function initTheme() {
   var theme = Cookies.get("theme")
 
@@ -394,3 +465,4 @@ function initArticles(url, callback) {
 }
 
 initTheme()
+initCreatedAt()
