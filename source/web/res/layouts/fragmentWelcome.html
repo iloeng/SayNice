@@ -1,0 +1,20 @@
+{{define "fgm_welcome"}}
+<div id="articleCheckModal" class="modal">
+  <div class="modal-background"></div>
+  <div class="modal-content">
+    <div>
+      <h5>SayNice 社区守约</h5>
+    </div>
+  </div>
+</div>
+<script>
+  var check = Cookies.get("checkArticle")
+  if (check) {
+    console.log("")
+  } else {
+    var articleCheckModal = document.getElementById("articleCheckModal")
+    articleCheckModal.className = "modal is-active"
+    Cookies.set("checkArticle", true)
+  }
+</script>
+{{end}}

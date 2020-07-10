@@ -256,6 +256,14 @@ p.preview::after {
   border-radius: 30px;
 }
 
+.scroll-hidden {
+  overflow: hidden;
+}
+
+.scroll-auto {
+  overflow: auto;
+}
+
 /* /////////////////////////////////////////////////////////////////// 随机匿名空间 START */
 
 .horizontal-scroll-wrapper {
