@@ -91,7 +91,9 @@ type JSONTime struct {
 
 // MarshalJSON 序列化
 func (t *JSONTime) MarshalJSON() ([]byte, error) {
-	return []byte(fmt.Sprintf(`"%s"`, t.Format("2006-01-02 15:04:05"))), nil
+	loc, _ := time.LoadLocation("Asia/Shanghai")
+
+	return []byte(fmt.Sprintf(`"%s"`, t.In(loc).Format("2006-01-02 15:04:05"))), nil
 }
 
 // UnmarshalJSON 反序列化
