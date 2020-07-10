@@ -395,10 +395,16 @@ function onNextPosts(
           attitudeDiv.dataset.id = emojiId
           attitudeDiv.dataset.count = count
           attitudeDiv.onclick = function () { onAttitudeCallback(attitudeDiv, post.id, emojiId) }
+
+          let emojiShow = emojiMap.get(emojiId)
+
+          if (undefined == emojiShow || null == emojiShow) {
+            continue
+          }
           if (1 == count) {
-            attitudeDiv.innerHTML = emojiMap.get(emojiId)
+            attitudeDiv.innerHTML = emojiShow
           } else {
-            attitudeDiv.innerHTML = emojiMap.get(emojiId) + "+" + count
+            attitudeDiv.innerHTML = emojiShow + "+" + count
           }
 
           attitudesDiv.appendChild(attitudeDiv)

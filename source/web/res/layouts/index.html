@@ -10,7 +10,7 @@
       <div class="post">
         <div id="t{{$post.id}}" class="text">{{$post.text}}<button onclick="onAll({{$post.id}})">全文</button></div>
         <div class="bar">
-          <span>{{$post.createdAt}}</span>
+          <span class="createdAt" data-time="{{$post.createdAt}}"></span>
           <div>
             <button class="text" onclick="onEmoji({{$post.id}})">😀</button>
             <button class="none" onclick="onReport({{$post.id}})">{{$.ReportButtonText}}</button>
@@ -133,6 +133,13 @@
 
           let id = parseInt(element.dataset.id)
           let count = parseInt(element.dataset.count)
+
+          let emojiShow = emojiMap.get(id)
+
+          if (undefined == emojiShow || null == emojiShow) {
+            attitudesDiv.removeChild(element)
+            continue
+          }
 
           if (1 == count) {
             element.innerHTML = emojiMap.get(id)
