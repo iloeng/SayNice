@@ -394,7 +394,7 @@ function onNextPosts(
           attitudeDiv.className = "attitude"
           attitudeDiv.dataset.id = emojiId
           attitudeDiv.dataset.count = count
-          attitudeDiv.onclick = function () { onAttitudeCallback(attitudeDiv, post.id, emojiId) }
+          attitudeDiv.onclick = function () { onAttitudeCallback(this, post.id) }
 
           let emojiShow = emojiMap.get(emojiId)
 
@@ -416,6 +416,7 @@ function onNextPosts(
       var emojisDiv = document.createElement("div")
       emojisDiv.id = "f" + post.id
       emojisDiv.className = "emojis"
+      emojisDiv.hidden = true
 
       postDiv.appendChild(emojisDiv)
 

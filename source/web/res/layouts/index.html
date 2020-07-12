@@ -18,7 +18,7 @@
         </div>
         <div id="a{{$post.id}}" class="attitudes">{{range $emojiId, $count := $post.attitudes}}
           <button class="attitude" data-id="{{$emojiId}}" data-count="{{$count}}"
-            onclick='onAttitudeAppend(this, "{{$post.id}}", "{{$emojiId}}")'></button>
+            onclick='onAttitudeAppend(this, "{{$post.id}}")'></button>
           {{end}}</div>
         <div id="f{{$post.id}}" class="emojis" hidden></div>
       </div>
