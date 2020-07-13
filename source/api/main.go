@@ -585,8 +585,6 @@ func submitPost(c *gin.Context) (int, string, interface{}) {
 		return 40030, e.Error(), nil
 	}
 
-	npid.Del(post.ID)
-
 	go openRASpace(post.ID, "请检查新主题中是否含有违反守约的内容，谢谢。")
 
 	return CodeSuccess, "", post.ID
