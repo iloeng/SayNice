@@ -7,10 +7,8 @@
 
 @media (max-width: 640px) {
   .menu {
-    display: flex;
     margin-bottom: 15px;
     padding: 5px;
-    background-color: #00000009;
   }
   .content {
     max-width: 100%;
@@ -25,10 +23,8 @@
 
 @media (min-width: 640px) {
   .menu {
-    display: flex;
     margin-bottom: 30px;
     padding: 10px;
-    background-color: #00000009;
   }
   .writer {
     max-width: 860px;
@@ -62,10 +58,8 @@
 
 @media (min-width: 1280px) {
   .menu {
-    display: flex;
     margin-bottom: 60px;
     padding: 20px;
-    background-color: #00000009;
   }
 }
 
@@ -74,6 +68,12 @@
   .writer {
     max-width: 1280px;
   }
+}
+
+.menu {
+  display: flex;
+  align-items: center;
+  background-color: #00000009;
 }
 
 footer {

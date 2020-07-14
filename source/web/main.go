@@ -83,6 +83,7 @@ func initTmpl(tmpl *template.Template) {
 		"fragmentVote.html",
 		"fragmentPreview.html",
 		"fragmentWelcome.html",
+		"fragmentAbout.html",
 	}
 
 	for _, v := range htmls {
