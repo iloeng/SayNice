@@ -26,12 +26,21 @@
     </div>
     <button id="nextPageBtn" class="text" style="width: 100%; margin: 25px 0;" onclick="toNexpage()">下一页</button>
   </div>
-  <button onclick="onWrite()" class="float" style="--shadow: 5;">
-    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit">
-      <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
-      <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" /></svg>
-  </button>
+  <a id="backToTop" href="javascript:scroll(0,0)" style="display: none;"><button class="f1" style="--shadow: 5;">
+      <svg t="1594740406243" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"
+        p-id="4359" width="48" height="48">
+        <path
+          d="M909.82006 415.207925L560.222495 65.61036c-27.303722-27.303722-71.561706-27.30474-98.868481 0L111.756449 415.207925c-27.303722 27.303722-27.30474 71.561706 0 98.868481 27.303722 27.303722 71.561706 27.30474 98.868481 0l230.245949-230.245949v670.248605c0 38.632349 31.287571 69.91992 69.91992 69.91992s69.91992-31.287571 69.91992-69.91992V283.830457l230.245949 230.245949c13.635066 13.635066 31.534908 20.488224 49.433732 20.488224s35.798665-6.818551 49.433731-20.488224c27.303722-27.303722 27.30474-71.561706 0-98.868481z"
+          fill="var(--text-c, var(--white))" p-id="4360"></path>
+      </svg>
+    </button></a>
+  <a href="/new/post"><button class="f0" style="--shadow: 5;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none"
+        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+        class="feather feather-edit">
+        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
+        <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" /></svg>
+    </button></a>
 
   {{template "fgm_footer" .}}
 
@@ -74,8 +83,14 @@
       })
     }
 
-    function onWrite() {
-      window.location.assign("/new/post")
+    function onBackToTop(status) {
+      console.log("scroll statis is " + status)
+      var backToTop = document.getElementById("backToTop")
+      if (1 == status) {
+        backToTop.style = "display: flex"
+      } else if (3 == status) {
+        backToTop.style = "display: none"
+      }
     }
 
     function loadEmoji(emojis) {
@@ -239,6 +254,10 @@
     window.onscroll = function () {
       autoLoad(100, onNextPage)
     }
+
+    document.addEventListener("scroll", function() {
+      onWindowScroll(onBackToTop)
+    })
   </script>
 </body>
 

@@ -322,6 +322,26 @@ function autoLoad(offset, callback) {
   }
 }
 
+var scrollTimer
+var scrollStatus = 0
+const scrollTimeout = 800
+
+function onWindowScroll(handler) {
+  clearTimeout(scrollTimer)
+  if (0 == scrollStatus) {
+    scrollStatus = 1
+    handler(scrollStatus)
+  } else {
+    scrollStatus = 2
+    handler(scrollStatus)
+  }
+  scrollTimer = setTimeout(function () {
+    scrollStatus = 3
+    handler(scrollStatus)
+    scrollStatus = 0
+  }, scrollTimeout)
+}
+
 function onNextPosts(
   url,
   postsDivName,

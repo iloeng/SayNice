@@ -129,7 +129,18 @@ button.text+button.text {
   margin-left: 10px;
 }
 
-button.float {
+button.f1 {
+  position: fixed;
+  height: 48px;
+  width: 48px;
+  bottom: 108px;
+  right: 32px;
+  text-align: center;
+  padding: 0px;
+  border-radius: 90px;
+}
+
+button.f0 {
   position: fixed;
   height: 48px;
   width: 48px;
