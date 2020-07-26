@@ -45,7 +45,7 @@ function alert(message, a, b, aCallback, bCallback) {
   dialog.style = "text-align: center;"
 
   var title = document.createElement("h5")
-  title.innerHTML = message
+  title.innerText = message
 
   var yesButton = document.createElement("button")
   yesButton.innerText = a
@@ -94,7 +94,7 @@ function report(url, title, articles, a, b) {
   dialog.style = "text-align: center;"
 
   var t = document.createElement("h4")
-  t.innerHTML = title
+  t.innerText = title
 
   var checked = []
   var checkboxs = document.createElement("div")
@@ -177,7 +177,7 @@ function appendArticle(parent, article, yes, no, yesCallback, noCallback) {
   articleDiv.className = "article"
 
   var articleText = document.createElement("p")
-  articleText.innerHTML = article
+  articleText.innerText = article
 
   var yesButton = document.createElement("button")
   yesButton.innerText = yes
@@ -366,8 +366,8 @@ function onNextPosts(
 
       postTextDiv.id = "t" + post.id
       postTextDiv.className = "text"
-      postTextDiv.innerHTML = post.text
-      postTextAllBtn.innerHTML = "全文"
+      postTextDiv.innerText = post.text
+      postTextAllBtn.innerText = "全文"
       postTextAllBtn.onclick = function () { onTextAllCallback(post.id) }
       postTextDiv.appendChild(postTextAllBtn)
 
@@ -375,7 +375,7 @@ function onNextPosts(
 
       var timeSpan = document.createElement("span")
       var createdAt = new Date(post.createdAt.replace(/-/gi, "/")).getTime()
-      timeSpan.innerHTML = Time.getFormatTime(createdAt)
+      timeSpan.innerText = Time.getFormatTime(createdAt)
 
       var toolDiv = document.createElement("div")
       var emojiBtn = document.createElement("button")
