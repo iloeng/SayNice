@@ -26,15 +26,15 @@ import (
 // 主题、随机匿名空间审查和用户表决状态
 const (
 	// StatusIdle 初始状态或进行中
-	StatusIdle = 0
+	StatusIdle = iota
 	// StatusAllowed 主题允许发布或表决结果为允许
-	StatusAllowed = 1
+	StatusAllowed
 	// StatusUnallowed 主题不允许发布或表决结果为不允许
-	StatusUnallowed = 2
+	StatusUnallowed
 	// StatusAbstain 用户放弃表决或主题存在争议，需要开启空间发起表决
-	StatusAbstain = 3
+	StatusAbstain
 	// StatusReported 主题被人举报了
-	StatusReported = 4
+	StatusReported
 )
 
 // APIMessage code 值
