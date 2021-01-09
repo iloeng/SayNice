@@ -644,10 +644,6 @@ func getRASpace(c *gin.Context) (int, string, interface{}) {
 	}
 
 	if 0 == id {
-		if 30 < rand.Intn(100) { // 没有用户系统的替代方案
-			return 60020, "See you next time.", nil
-		}
-
 		idIndex := rand.Intn(box.Count())
 		id = box.Get(idIndex)
 	}
